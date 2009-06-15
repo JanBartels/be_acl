@@ -100,16 +100,12 @@ class tx_beacl_userAuthGroup {
 	 */
 
 	function getPagePermsClause($params, $that)	{
-	
-			// Load cache from BE User data
-		$cache = $GLOBALS['BE_USER']->getSessionData('be_acl');
-		if (!$cache)	$cache = array();
-		
+
+		$fileCachePath = PATH_site . 'typo3temp/beacl_cache/';
+		$filename = $fileCachePath . 'ppc_' . md5($that->user['uid'] . $params['perms']) . ',cache';
 			// Check if we can return something from cache
-		if (is_array($cache[$that->user['uid']])
-			&& $cache[$that->user['uid']][$params['perms']]) {
-			return $cache[$that->user['uid']][$params['perms']];
-		}
+		if (file_exists($filename)) return file_get_contents($filename);     
+		
 		
 			// get be_acl config in EM
 		$beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
@@ -146,8 +142,7 @@ class tx_beacl_userAuthGroup {
 		$str = ' ( '.$str.' ) ';
 		
 			// Store data in cache
-		$cache[$that->user['uid']][$params['perms']] = $str;
-		$GLOBALS['BE_USER']->setAndSaveSessionData('be_acl', $cache);
+		file_put_contents($filename, $str);
 		return $str;
 	}
 
@@ -223,6 +218,25 @@ class tx_beacl_userAuthGroup {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid','pages', 'pid='.intval($pid).' AND deleted=0');
 		while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->aclTraversePageTree($result['uid']);
+		}
+	}
+	
+	/**
+	* hook for clear cache, works for "all" and "configuration" clear command
+	* 
+	* @param array $params params for the hook
+	* @param object $pObj parent class (tcemain)
+	*/
+	public function clearCache($params, $pObj) {
+		if($params['cacheCmd'] == 'temp_CACHED' || $params['cacheCmd'] == 'all') {
+			$tempPath = PATH_site . 'typo3temp/beacl_cache/'; 
+			$handle=opendir($tempPath);
+			while ($data=readdir($handle)) {
+				if (!is_dir($data) && $data != "." && $data != "..") {
+					unlink($tempPath . $data);
+				}
+			}
+			closedir($handle);
 		}
 	}
 }
