@@ -43,7 +43,7 @@ class tx_beacl_userAuthGroup {
 	public function calcPerms($params, $that) {
 		$row = $params['row'];
 
-		$beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
+		$beAclConfig = $this->getConfig();
 		if (!$beAclConfig['disableOldPermissionSystem']) {
 			$out = $params['outputPermissions'];
 		} else {
@@ -248,7 +248,9 @@ class tx_beacl_userAuthGroup {
 	 * @return void
 	 */
 	public function processDatamap_afterDatabaseOperations($status, $table, $id, &$fieldArray, &$pObj) {
-		if ($table == 'pages') {
+		$beAclConfig = $this->getConfig();
+		$tables = t3lib_div::trimExplode(',', $beAclConfig['tablesForCacheClear'], TRUE);
+		if (in_array($table, $tables)) {
 			$this->clearBeaAclCache();
 		}
 	}
@@ -264,9 +266,11 @@ class tx_beacl_userAuthGroup {
 	 * @return void
 	 */
 	public function processCmdmap_postProcess ($command, $table ,$id, $value, &$pObj) {
-			if ($command == 'delete' && $table == 'pages') {
-				$this->clearBeaAclCache();
-			}
+		$beAclConfig = $this->getConfig();
+		$tables = t3lib_div::trimExplode(',', $beAclConfig['tablesForCacheClear'], TRUE);
+		if ($command == 'delete' && in_array($table, $tables)) {
+			$this->clearBeaAclCache();
+		}
 	}
 
 	/**
@@ -283,6 +287,14 @@ class tx_beacl_userAuthGroup {
 				}
 			}
 			closedir($handle);
+	}
+
+	/**
+	 * Gets the ext config
+	 * @return array
+	 */
+	protected function getConfig() {
+		return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
 	}
 }
 
