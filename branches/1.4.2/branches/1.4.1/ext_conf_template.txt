@@ -1,0 +1,5 @@
+# cat=basic/enable; type=boolean; label=disable "old" User/Group/World permission system
+disableOldPermissionSystem = 0
+
+# cat=basic/enable; type=boolean; label=enable selector for users/groups - VERY useful if there are many ACLs
+enableFilterSelector = 1
