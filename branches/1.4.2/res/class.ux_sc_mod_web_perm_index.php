@@ -26,6 +26,9 @@
  * Backend ACL - Replacement for "web->Access"
  *
  * @author  Sebastian Kurfuerst <sebastian@garbage-group.de>
+ *
+ * Bugfixes applied:
+ * #25942, #25835, #13019, #13176, #13175 Jan Bartels
  */
 
 class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
@@ -168,7 +171,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 
 				// First column:
 			$cells[]='
-					<td align="left" nowrap="nowrap"'.$bgCol.$this->generateTitleAttribute($data['row']['uid'],$be_user_Array, $be_group_Array).'>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd($data['row']['title'],$tLen)).'&nbsp;</td>';
+					<td align="left" nowrap="nowrap"'.$bgCol.$this->generateTitleAttribute($data['row']['uid'],$be_user_Array, $be_group_Array).'>'.$data['HTML'].htmlspecialchars(t3lib_div::fixed_lgd_cs($data['row']['title'],$tLen)).'&nbsp;</td>';
 
 				// "Edit permissions" -icon
 			if ($editPermsAllowed && $data['row']['uid'])	{
@@ -270,17 +273,33 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 		$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
 		$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
 
+
+		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+			$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />';
+		else
+			$icon = '<img src="legend.gif" width="86" height="75" alt="" />';
+
 		$code='<table border="0" id="typo3-legendTable">
 			<tr>
-				<td valign="top"><img src="legend.gif" width="86" height="75" alt="" /></td>
+				<td valign="top">'.$icon.'</td>
 				<td valign="top" nowrap="nowrap">'.$legendText.'</td>
 			</tr>
 		</table>';
 		$code.='<br />'.$LANG->getLL('def',1);
-		$code.='<br /><br /><span class="perm-allowed">*</span>: '.$LANG->getLL('A_Granted',1);
-		$code.='<br /><span class="perm-denied">x</span>: '.$LANG->getLL('A_Denied',1);
 
-			// Adding section with legend code:
+		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+		{
+			// use sprites for Typo3 V4.4 or later
+			$code.='<br /><br />' . t3lib_iconWorks::getSpriteIcon('status-status-permission-granted') . ': ' . $LANG->getLL('A_Granted', 1);
+			$code.='<br />'       . t3lib_iconWorks::getSpriteIcon('status-status-permission-denied')  . ': ' . $LANG->getLL('A_Denied', 1);
+		}
+		else
+		{
+			$code.='<br /><br /><span class="perm-allowed">*</span>: '.$LANG->getLL('A_Granted',1);
+			$code.='<br />      <span class="perm-denied" >x</span>: '.$LANG->getLL('A_Denied',1);
+		}
+
+		// Adding section with legend code:
 		$this->content.=$this->doc->spacer(20);
 		$this->content.=$this->doc->section($LANG->getLL('Legend').':',$code,0,1);
 	}
@@ -475,6 +494,8 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 			'<input type="submit" value="'.$LANG->getLL('Abort',1).'" onclick="'.htmlspecialchars('jumpToUrl(\'index.php?id='.$this->id.'\'); return false').'" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
 		';
+		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4005000 )
+			$code .= t3lib_TCEforms::getHiddenTokenField('tceAction');  // only Typo3 V4.5 or later
 
 			// Adding section with the permission setting matrix:
 		$this->content.=$this->doc->divider(5);
@@ -751,14 +772,33 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 	 * @return	string		HTML marked up x/* indications.
 	 */
 	function printPerms($int)	{
-		$str='';
-		$str.= (($int&1)?'*':'<span class="perm-denied">x</span>');
-		$str.= (($int&16)?'*':'<span class="perm-denied">x</span>');
-		$str.= (($int&2)?'*':'<span class="perm-denied">x</span>');
-		$str.= (($int&4)?'*':'<span class="perm-denied">x</span>');
-		$str.= (($int&8)?'*':'<span class="perm-denied">x</span>');
 
-		return '<span class="perm-allowed">'.$str.'</span>';
+		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+		{
+			// use sprites for Typo3 V4.4 or later
+			global $LANG;
+			$permissions = array(1,16,2,4,8);
+			foreach ($permissions as $permission) {
+				if ($int&$permission) {
+					$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-granted',array('tag'=>'a','title'=>$LANG->getLL($permission,1), 'onclick'=> 'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'delete\', \''.$who.'\', '.$int.');'));
+				} else {
+					$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-denied',array('tag'=>'a','title'=>$LANG->getLL($permission,1),'onclick'=>'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'add\', \''.$who.'\', '.$int.');'));
+				}
+			}
+
+			return $str;
+		}
+		else
+		{
+			$str='';
+			$str.= (($int&1)?'*':'<span class="perm-denied">x</span>');
+			$str.= (($int&16)?'*':'<span class="perm-denied">x</span>');
+			$str.= (($int&2)?'*':'<span class="perm-denied">x</span>');
+			$str.= (($int&4)?'*':'<span class="perm-denied">x</span>');
+			$str.= (($int&8)?'*':'<span class="perm-denied">x</span>');
+
+			return '<span class="perm-allowed">'.$str.'</span>';
+		}
 	}
 
 
