@@ -29,6 +29,15 @@ $LOCAL_LANG = Array (
 		'aclObjSelUpdate' => 'Opdatér!',
 	),
 	'de' => Array (
+		'recursiveAcl' => 'Rekursiv',
+		'addAcl' => 'ACL hinzufügen',
+		'delAcl' => 'ACL löschen',
+		'saveAndClose' => 'Speichern und Schließen',
+		'aclUsers' => 'Benutzer ACL',
+		'aclGroups' => 'Gruppen ACL',
+		'aclUser' => 'Benutzer',
+		'aclGroup' => 'Gruppe',
+		'aclObjSelUpdate' => 'Aktualisieren!',
 	),
 	'no' => Array (
 	),
