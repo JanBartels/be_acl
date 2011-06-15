@@ -19,6 +19,7 @@ $TCA['tx_beacl_acl'] = Array (
 				),
 				'size' => 1,
 				'maxitems' => 1,
+				'default' => 0,
 			)
 		),
 		'object_id' => Array (
@@ -26,8 +27,6 @@ $TCA['tx_beacl_acl'] = Array (
 			'label' => 'LLL:EXT:be_acl/locallang_db.php:tx_beacl_acl.object_id',
 			'config' => Array (
 				'type' => 'select',
-				#'foreign_table' => 'be_users',
-				#'foreign_table_where' => '',
 				'itemsProcFunc' => 'tx_beacl_objsel->select',
 				'size' => 1,
 				'minitems' => 0,

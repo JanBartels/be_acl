@@ -6,6 +6,7 @@ t3lib_extMgm::addUserTSConfig('
 
 
 
+require_once(t3lib_extMgm::extPath('be_acl').'class.tx_beacl_objsel.php');
 require_once(t3lib_extMgm::extPath('be_acl').'res/class.tx_beacl_userauthgroup.php');
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'][] = 'tx_beacl_userAuthGroup->calcPerms';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'][] = 'tx_beacl_userAuthGroup->getPagePermsClause';
