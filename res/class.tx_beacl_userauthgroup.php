@@ -79,7 +79,7 @@ class tx_beacl_userAuthGroup {
 			}
 			$i++;
 		}
-		
+
 		return $out;
 	}
 
@@ -100,17 +100,19 @@ class tx_beacl_userAuthGroup {
 	 */
 
 	function getPagePermsClause($params, $that)	{
-	
-			// Load cache from BE User data
-		$cache = $GLOBALS['BE_USER']->getSessionData('be_acl');
-		if (!$cache)	$cache = array();
-		
+
+		// Load cache from BE User data
+		$cache = array();
+		if (!empty($GLOBALS['BE_USER'])) {
+		  $cache = $GLOBALS['BE_USER']->getSessionData('be_acl');
+		}
+
 			// Check if we can return something from cache
 		if (is_array($cache[$that->user['uid']])
 			&& $cache[$that->user['uid']][$params['perms']]) {
 			return $cache[$that->user['uid']][$params['perms']];
 		}
-		
+
 			// get be_acl config in EM
 		$beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
 		if(!$beAclConfig['disableOldPermissionSystem']) {
@@ -144,10 +146,12 @@ class tx_beacl_userAuthGroup {
 
 			// for safety, put whole where query part into brackets so it won't interfere with other parts of the page
 		$str = ' ( '.$str.' ) ';
-		
+
 			// Store data in cache
 		$cache[$that->user['uid']][$params['perms']] = $str;
-		$GLOBALS['BE_USER']->setAndSaveSessionData('be_acl', $cache);
+		if (!empty($GLOBALS['BE_USER'])) {
+			$GLOBALS['BE_USER']->setAndSaveSessionData('be_acl', $cache);
+		}
 		return $str;
 	}
 

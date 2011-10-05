@@ -274,7 +274,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 		$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
 
 
-		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+		if ( $this->getTypo3Version() >= 4004000 )
 			$icon = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />';
 		else
 			$icon = '<img src="legend.gif" width="86" height="75" alt="" />';
@@ -287,7 +287,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 		</table>';
 		$code.='<br />'.$LANG->getLL('def',1);
 
-		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+		if ( $this->getTypo3Version() >= 4004000 )
 		{
 			// use sprites for Typo3 V4.4 or later
 			$code.='<br /><br />' . t3lib_iconWorks::getSpriteIcon('status-status-permission-granted') . ': ' . $LANG->getLL('A_Granted', 1);
@@ -494,7 +494,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 			'<input type="submit" value="'.$LANG->getLL('Abort',1).'" onclick="'.htmlspecialchars('jumpToUrl(\'index.php?id='.$this->id.'\'); return false').'" />
 			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
 		';
-		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4005000 )
+		if ( $this->getTypo3Version() >= 4005000 )
 			$code .= t3lib_TCEforms::getHiddenTokenField('tceAction');  // only Typo3 V4.5 or later
 
 			// Adding section with the permission setting matrix:
@@ -773,7 +773,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 	 */
 	function printPerms($int)	{
 
-		if ( t3lib_div::int_from_ver( TYPO3_version ) >= 4004000 )
+		if ( $this->getTypo3Version() >= 4004000 )
 		{
 			// use sprites for Typo3 V4.4 or later
 			global $LANG;
@@ -802,5 +802,11 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 	}
 
 
+	function getTypo3Version() {
+		$version = class_exists('t3lib_utility_VersionNumber')
+        	? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+        	: t3lib_div::int_from_ver(TYPO3_version);
+        return $version;
+    }
 }
 ?>
