@@ -3,6 +3,3 @@ disableOldPermissionSystem = 0
 
 # cat=basic/enable; type=boolean; label=enable selector for users/groups - VERY useful if there are many ACLs
 enableFilterSelector = 1
-
-# cat=basic/enable; type=string; label=define tables where changes lead to automatic ACL cache clear (comma-seperated list)
-tablesForCacheClear = pages

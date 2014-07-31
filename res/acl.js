@@ -145,7 +145,6 @@ function addACL () {
 		// permission table cells
 	for(var i = 1; i <= 6;i++) {
 		tableCells[i] = document.createElement("td");
-		tableCells[i].className = 'bgColor-20';
 		var id = 0;
 		switch(i) {
 			case 1: id = 1; break;
@@ -193,7 +192,7 @@ function addACL () {
 	tableRow.appendChild(tableCells[7]);
 
 		// append line to table
-	document.getElementById('typo3-permissionMatrix').firstChild.appendChild(tableRow);
+	document.getElementById('typo3-permissionMatrix').getElementsByTagName('tbody')[0].appendChild(tableRow);
 
 		// hidden fields
 	var hiddenFields = document.getElementById('insertHiddenFields');
