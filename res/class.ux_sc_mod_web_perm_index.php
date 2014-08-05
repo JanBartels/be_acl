@@ -496,7 +496,19 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
 
         $code .= '
             </table>
-            <br />
+            <br />';
+        if ($disableOldPermissionSystem) {
+        	$code .= '<span style="display:none;">';
+        	for ( $i = 1; $i <= 5; ++$i ) {
+				$code .= $this->printCheckBox('perms_user', $i)
+					   . $this->printCheckBox('perms_group', $i)
+					   . $this->printCheckBox('perms_everybody', $i)
+					   ;
+			}
+        	$code .= '</span>';
+        }
+
+        $code .= '
             <span id="insertHiddenFields"></span>
             <img ' . t3lib_iconWorks::skinImg('../../../', 'gfx/garbage.gif') . ' alt="' . $LANG->getLL('delAcl', 1) . '" / id="templateDeleteImage" style="display:none">
             <a href="javascript:addACL()"><img  ' . t3lib_iconWorks::skinImg('../../../', 'gfx/new_el.gif') . ' alt="' . $LANG->getLL('addAcl', 1) . '" />' . $LANG->getLL('addAcl', 1) . '</a><br>
@@ -816,13 +828,13 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
                 $str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-granted', array(
                     'tag' => 'a',
                     'title' => $LANG->getLL($permission, 1),
-                    'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');'
+                    'onclick' => 'WebPermissions.setPermissions(' . $GLOBALS['SOBE']->id . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');'
                 ));
             } else {
                 $str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-denied', array(
                     'tag' => 'a',
                     'title' => $LANG->getLL($permission, 1),
-                    'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');'
+                    'onclick' => 'WebPermissions.setPermissions(' . $GLOBALS['SOBE']->id . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');'
                 ));
             }
         }

@@ -90,6 +90,20 @@ function getNewID () {
 	return ACLid;
 }
 
+function isIE8() {
+	if (navigator.appName.indexOf("Explorer") != -1) {
+	    var ua = navigator.userAgent;
+	    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+	    var rv = 0;
+	    if (re.exec(ua) != null)
+	      rv = parseFloat( RegExp.$1 );
+	    if ( rv >= 9.0 )
+	    	return false;
+	    return true;
+	}
+	return false;
+}	
+
 /**
  * add ACL
  */
@@ -108,12 +122,13 @@ function addACL () {
 
 		// first table cell with selectors
 	tableCells[0] = document.createElement("td");
-	tableCells[0].className = 'bgColor2';
+	tableCells[0].className = 'bgColor5';
 	tableCells[0].align = 'right';
 
-		if (navigator.appName.indexOf("Explorer") != -1)	{
-			variousObjects[1] = document.createElement('<select name="data[tx_beacl_acl][' + ACLid + '][type]">');
-
+	var bIsIE8 = isIE8();
+	
+		if (bIsIE8) {
+  			variousObjects[1] = document.createElement('<select name="data[tx_beacl_acl][' + ACLid + '][type]">');
 		} else {
 			variousObjects[1] = document.createElement('select');
 			variousObjects[1].setAttribute("name", 'data[tx_beacl_acl][' + ACLid + '][type]');
@@ -131,7 +146,7 @@ function addACL () {
 			variousObjects[1].appendChild(variousObjects[11]);
 			variousObjects[1].appendChild(variousObjects[12]);
 
-		if (navigator.appName.indexOf("Explorer") != -1)	{
+		if (bIsIE8)	{
 			variousObjects[2] = document.createElement('<select name="data[tx_beacl_acl][' + ACLid + '][object_id]">');
 		} else {
 			variousObjects[2] = document.createElement('select');
@@ -154,7 +169,7 @@ function addACL () {
 			case 5: id = 4; break;
 
 			case 6:
-				if (navigator.appName.indexOf("Explorer") != -1)	{
+				if (bIsIE8)	{
 					selectorBoxes[i-1] = document.createElement('<input name="data[tx_beacl_acl][' +  ACLid + '][recursive]">');
 				} else {
 					selectorBoxes[i-1] = document.createElement('input');
@@ -166,7 +181,7 @@ function addACL () {
 				break;
 		}
 		if(id != 0) {
-			if (navigator.appName.indexOf("Explorer") != -1)	{
+			if (bIsIE8)	{
 				selectorBoxes[i-1] = document.createElement('<input name="check[perms_acl_' +  ACLid + ']['+id+']">');
 			} else {
 				selectorBoxes[i-1] = document.createElement('input');
@@ -196,7 +211,7 @@ function addACL () {
 
 		// hidden fields
 	var hiddenFields = document.getElementById('insertHiddenFields');
-	if (navigator.appName.indexOf("Explorer") != -1)	{
+	if (bIsIE8)	{
 		var hiddenACLstore = document.createElement('<input name="data[tx_beacl_acl][' + ACLid + '][permissions]">');
 	} else {
 		var hiddenACLstore = document.createElement('input');
@@ -207,7 +222,7 @@ function addACL () {
 
 	hiddenFields.appendChild(hiddenACLstore);
 
-	if (navigator.appName.indexOf("Explorer") != -1)	{
+	if (bIsIE8)	{
 		var hiddenPIDstore = document.createElement('<input name="data[tx_beacl_acl][' + ACLid + '][pid]">');
 	} else {
 		var hiddenPIDstore = document.createElement('input');

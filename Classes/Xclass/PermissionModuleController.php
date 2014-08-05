@@ -437,10 +437,21 @@ class Tx_BeAcl_Xclass_PermissionModuleController extends SC_mod_web_perm_index {
 				</tr>';
 		}
 
-		$code .= '
-				</tbody>
-			</table>
-			<br />
+        $code .= '
+            </table>
+            <br />';
+        if ($disableOldPermissionSystem) {
+        	$code .= '<span style="display:none;">';
+        	for ( $i = 1; $i <= 5; ++$i ) {
+				$code .= $this->printCheckBox('perms_user', $i)
+					   . $this->printCheckBox('perms_group', $i)
+					   . $this->printCheckBox('perms_everybody', $i)
+					   ;
+			}
+        	$code .= '</span>';
+        }
+
+        $code .= '
 			<span id="insertHiddenFields"></span>
 			<img ' . IconUtility::skinImg('', 'gfx/garbage.gif') . ' alt="' . $GLOBALS['LANG']->getLL('delAcl', 1) . '" / id="templateDeleteImage" style="display:none">
 			<a href="javascript:addACL()"><img  ' . IconUtility::skinImg('', 'gfx/new_el.gif') . ' alt="' . $GLOBALS['LANG']->getLL('addAcl', 1) . '" />' . $GLOBALS['LANG']->getLL('addAcl', 1) . '</a><br />
@@ -757,13 +768,13 @@ class Tx_BeAcl_Xclass_PermissionModuleController extends SC_mod_web_perm_index {
 				$str .= IconUtility::getSpriteIcon('status-status-permission-granted', array(
 					'tag' => 'a',
 					'title' => $LANG->getLL($permission, 1),
-					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');'
+					'onclick' => 'WebPermissions.setPermissions(' . $GLOBALS['SOBE']->id . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');'
 				));
 			} else {
 				$str .= IconUtility::getSpriteIcon('status-status-permission-denied', array(
 					'tag' => 'a',
 					'title' => $LANG->getLL($permission, 1),
-					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');'
+					'onclick' => 'WebPermissions.setPermissions(' . $GLOBALS['SOBE']->id . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');'
 				));
 			}
 		}
