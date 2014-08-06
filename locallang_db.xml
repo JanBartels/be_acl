@@ -9,7 +9,6 @@
   </meta>
   <data type="array">
     <languageKey index="default" type="array">
-      <label index="OSM">OSM</label>
 		<label index="tx_beacl_acl">Access Control Lists</label>
 		<label index="tx_beacl_acl.type.I.0">User</label>
 		<label index="tx_beacl_acl.type.I.1">Group</label>
