@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "be_acl".
  *
- * Auto generated 19-06-2014 14:49
+ * Auto generated 06-08-2014 20:07
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -42,7 +42,9 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:19:{s:24:"class.tx_beacl_hooks.php";s:4:"9ccb";s:25:"class.tx_beacl_objsel.php";s:4:"503a";s:16:"ext_autoload.php";s:4:"001a";s:21:"ext_conf_template.txt";s:4:"7db6";s:12:"ext_icon.gif";s:4:"1bea";s:17:"ext_localconf.php";s:4:"2c68";s:14:"ext_tables.php";s:4:"aceb";s:14:"ext_tables.sql";s:4:"1076";s:21:"icon_tx_beacl_acl.gif";s:4:"1bea";s:16:"locallang_db.php";s:4:"e78d";s:7:"tca.php";s:4:"6d44";s:45:"Classes/Xclass/PermissionModuleController.php";s:4:"4f5b";s:14:"doc/manual.sxw";s:4:"4db3";s:19:"doc/wizard_form.dat";s:4:"e68f";s:20:"doc/wizard_form.html";s:4:"4e9b";s:10:"res/acl.js";s:4:"6946";s:36:"res/class.tx_beacl_userauthgroup.php";s:4:"68a2";s:38:"res/class.ux_sc_mod_web_perm_index.php";s:4:"ca90";s:22:"res/locallang_perm.php";s:4:"4435";}',
+	'_md5_values_when_last_written' => 'a:19:{s:24:"class.tx_beacl_hooks.php";s:4:"8fae";s:25:"class.tx_beacl_objsel.php";s:4:"059d";s:16:"ext_autoload.php";s:4:"cda2";s:21:"ext_conf_template.txt";s:4:"dc05";s:12:"ext_icon.gif";s:4:"1bea";s:17:"ext_localconf.php";s:4:"9bef";s:14:"ext_tables.php";s:4:"27f0";s:14:"ext_tables.sql";s:4:"15be";s:21:"icon_tx_beacl_acl.gif";s:4:"1bea";s:16:"locallang_db.xml";s:4:"3f3f";s:7:"tca.php";s:4:"f585";s:45:"Classes/Xclass/PermissionModuleController.php";s:4:"8064";s:14:"doc/manual.sxw";s:4:"4db3";s:19:"doc/wizard_form.dat";s:4:"e68f";s:20:"doc/wizard_form.html";s:4:"4e9b";s:10:"res/acl.js";s:4:"8fa6";s:36:"res/class.tx_beacl_userauthgroup.php";s:4:"68a2";s:38:"res/class.ux_sc_mod_web_perm_index.php";s:4:"eea7";s:22:"res/locallang_perm.xml";s:4:"c301";}',
+	'suggests' => array(
+	),
 );
 
 ?>
