@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+  <meta type="array">
+    <description></description>
+    <type></type>
+    <csh_table></csh_table>
+    <labelContext type="array">
+    </labelContext>
+  </meta>
+  <data type="array">
+    <languageKey index="default" type="array">
+		<label index="recursiveAcl">Recursive</label>
+		<label index="addAcl">Add ACL</label>
+		<label index="delAcl">Delete ACL</label>
+		<label index="saveAndClose">Save and Close</label>
+		<label index="aclUsers">ACL Users</label>
+		<label index="aclGroups">ACL Groups</label>
+		<label index="aclUser">User</label>
+		<label index="aclGroup">Group</label>
+		<label index="aclObjSelUpdate">Update!</label>
+    </languageKey>
+    <languageKey index="dk" type="array">
+		<label index="recursiveAcl">Rekursiv</label>
+		<label index="addAcl">Tilføj ACL</label>
+		<label index="delAcl">Slet ACL</label>
+		<label index="saveAndClose">Gem og luk</label>
+		<label index="aclUsers">ACL brugere</label>
+		<label index="aclGroups">ACL grupper</label>
+		<label index="aclUser">Bruger</label>
+		<label index="aclGroup">Gruppe</label>
+		<label index="aclObjSelUpdate">Opdatér!</label>
+    </languageKey>
+    <languageKey index="de" type="array">
+		<label index="recursiveAcl">Rekursiv</label>
+		<label index="addAcl">ACL hinzufügen</label>
+		<label index="delAcl">ACL löschen</label>
+		<label index="saveAndClose">Speichern und Schließen</label>
+		<label index="aclUsers">Benutzer ACL</label>
+		<label index="aclGroups">Gruppen ACL</label>
+		<label index="aclUser">Benutzer</label>
+		<label index="aclGroup">Gruppe</label>
+		<label index="aclObjSelUpdate">Aktualisieren!</label>
+    </languageKey>
+  </data>
+  <orig_text type="array">
+    <languageKey index="default" type="array"></languageKey>
+  </orig_text>
+</T3locallang>

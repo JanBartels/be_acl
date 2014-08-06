@@ -54,7 +54,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
         if ($beAclConfig['disableOldPermissionSystem']) {
             $disableOldPermissionSystem = 1;
         }
-        $LANG->includeLLFile('EXT:be_acl/res/locallang_perm.php');
+        $LANG->includeLLFile('EXT:be_acl/res/locallang_perm.xml');
 
         // Get usernames and groupnames: The arrays we get in return contains only 1) users which are members of the groups of the current user, 2) groups that the current user is member of
         $beGroupKeys = $BE_USER->userGroupsUID;
@@ -319,7 +319,7 @@ class ux_SC_mod_web_perm_index extends SC_mod_web_perm_index {
         if ($beAclConfig['disableOldPermissionSystem']) {
             $disableOldPermissionSystem = 1;
         }
-        $LANG->includeLLFile('EXT:be_acl/res/locallang_perm.php');
+        $LANG->includeLLFile('EXT:be_acl/res/locallang_perm.xml');
 
         if ($BE_USER->workspace != 0) {
             // Adding section with the permission setting matrix:

@@ -56,7 +56,7 @@ class Tx_BeAcl_Xclass_PermissionModuleController extends SC_mod_web_perm_index {
 		if ($beAclConfig['disableOldPermissionSystem']) {
 			$disableOldPermissionSystem = 1;
 		}
-		$GLOBALS['LANG']->includeLLFile('EXT:be_acl/res/locallang_perm.php');
+		$GLOBALS['LANG']->includeLLFile('EXT:be_acl/res/locallang_perm.xml');
 
 		// Get usernames and groupnames: The arrays we get in return contains only 1) users which are members of the groups of the current user, 2) groups that the current user is member of
 		$beGroupKeys = $GLOBALS['BE_USER']->userGroupsUID;
@@ -284,7 +284,7 @@ class Tx_BeAcl_Xclass_PermissionModuleController extends SC_mod_web_perm_index {
 		if ($beAclConfig['disableOldPermissionSystem']) {
 			$disableOldPermissionSystem = 1;
 		}
-		$GLOBALS['LANG']->includeLLFile('EXT:be_acl/res/locallang_perm.php');
+		$GLOBALS['LANG']->includeLLFile('EXT:be_acl/res/locallang_perm.xml');
 
 		// Get usernames and groupnames
 		$beGroupArray = BackendUtility::getListGroupNames('title,uid');

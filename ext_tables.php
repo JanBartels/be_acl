@@ -5,7 +5,7 @@ t3lib_extMgm::allowTableOnStandardPages("tx_beacl_acl");
 
 $TCA["tx_beacl_acl"] = Array (
 	"ctrl" => Array (
-		"title" => "LLL:EXT:be_acl/locallang_db.php:tx_beacl_acl",
+		"title" => "LLL:EXT:be_acl/locallang_db.xml:tx_beacl_acl",
 		"label" => "uid",
 		"tstamp" => "tstamp",
 		"crdate" => "crdate",
