@@ -1,0 +1,18 @@
+<span>
+	<f:if condition="{username}">
+		<f:then>
+			<f:comment>
+				A user name can be resolved
+			</f:comment>
+			{username -> f:format.crop(maxCharacters:20)}
+		</f:then>
+		<f:else>
+			<f:comment>
+				User was deleted -> [deleted]
+			</f:comment>
+			<span class="not_set" title="{userId}">
+				[<f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:deleted" />]
+			</span>
+		</f:else>
+	</f:if>
+</span>

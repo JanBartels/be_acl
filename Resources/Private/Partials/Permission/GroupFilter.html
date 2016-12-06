@@ -1,0 +1,19 @@
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+
+<div class="form-group">
+<label for="{filter.id}">{filter.title}</label>
+
+<select class="form-control" id="{filter.id}" size="5" name="tx_beacl_objsel[1][]" multiple="multiple">
+	<f:for each="{filter.options}" as="option" key="oid">
+		<f:if condition="{option.selected}==1">
+			<f:then>
+				<option value="{oid}" selected="selected">{bu:arrayElement(array:groups, key:oid, subKey:'title')}</option>
+			</f:then>
+			<f:else>
+				<option value="{oid}">{bu:arrayElement(array:groups, key:oid, subKey:'title')}</option>
+			</f:else>
+		</f:if>
+	</f:for>
+</select><br />
+<input type="button" value="<f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:aclObjSelUpdate' />" onclick="document.aclfilterform.action=document.location; document.aclfilterform.submit()" />
+</div>

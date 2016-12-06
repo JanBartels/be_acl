@@ -1,0 +1,7 @@
+<f:comment><f:form.select class="form-control form-inline tx_beacl-edit-type-selector" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{aclId}][type]" options="{options}"  value="{aclType}" optionValueField="key" optionLabelField="value" data="{acluid:aclId}"/></f:comment>
+
+<select class="form-control form-inline tx_beacl-edit-type-selector" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{aclId}][type]" value="{aclType}" data-acluid="{aclId}">
+	<f:for each="{options}" as="option">
+		<option value="{option.key}" {f:if(condition: '{option.key}=={aclType}', then: 'selected="selected"')} >{option.value}</option>
+	</f:for>
+</select>

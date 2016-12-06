@@ -1,0 +1,273 @@
+{namespace be = TYPO3\CMS\Backend\ViewHelpers}
+{namespace bu = TYPO3\CMS\Beuser\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+{namespace ba = JBartels\BeAcl\ViewHelpers}
+
+<f:layout name="Permission" />
+
+<f:section name="headline">
+	<h1><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions" /></h1>
+</f:section>
+
+<f:section name="content">
+	<div class="form-group">
+		<label for="depth"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Depth" />:</label>
+		<f:form.select class="form-control" id="depth" value="{depth}" options="{depthOptions}" additionalAttributes="{onchange: 'jumpToUrl(\'{depthBaseUrl}\'.replace(\'__DEPTH__\', this.options[this.selectedIndex].value), this);'}" />
+	</div>
+	<f:if condition="{enableFilterSelector}==1">
+	<form action="" name="aclfilterform" method="POST">
+		<div class="row">
+		<f:if condition="{userFilterOptions.options -> f:count()} > 0">
+			<f:then>
+			<div class="col-xs-12 col-sm-6"><f:render partial="Permission/UserFilter" arguments="{filter:userFilterOptions, users:beUsers}" /></div>
+			</f:then>
+		</f:if>
+		<f:if condition="{groupFilterOptions.options -> f:count()} > 0">
+			<f:then>
+			<div class="col-xs-12 col-sm-6"><f:render partial="Permission/GroupFilter" arguments="{filter:groupFilterOptions, groups:beGroups}" /></div>
+			</f:then>
+		</f:if>
+		</div>
+	</form>
+	</f:if>
+
+	<div class="panel panel-default panel-space">
+		<div class="table-fit">
+			<table class="table table-striped table-hover" id="typo3-permissionList">
+				<thead>
+				<tr>
+					<th colspan="2">&nbsp;</th>
+					<f:if condition="{disableOldPermissionSystem}==0">
+					<th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Owner" /></th>
+					<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Group" /></th>
+					<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Everybody" /></th>
+					</f:if>
+					<th align="center"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock" /></th>
+					<th align="center"><f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:aclUsers' /></th>
+					<f:for each="{userSelectedAcls}" as="userAcl" key="oid">
+					<th align="center" scope="col">
+						<f:render
+							partial="Permission/OwnerAclName"
+							arguments="{
+								pageId: '{data.row.uid}',
+								userId: '{oid}',
+								username: '{bu:arrayElement(array:beUsers, key:oid, subKey:\'username\')}'
+							}"
+						/>
+					</th>
+					</f:for>
+					<th align="center"><f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:aclGroups' /></th>
+					<f:for each="{groupSelectedAcls}" as="groupAcl" key="oid">
+					<th align="center" scope="col">
+						<f:render
+							partial="Permission/GroupAclName"
+							arguments="{
+								pageId: '{data.row.uid}',
+								groupId: '{oid}',
+								groupname: '{bu:arrayElement(array:beGroups, key:oid, subKey:\'title\')}'
+							}"
+						/>
+					</th>
+					</f:for>
+				</tr>
+				</thead>
+				<f:for each="{viewTree}" as="data">
+					<tr>
+						<f:if condition="{data.row.uid}">
+							<f:then>
+								<f:comment>
+									A "normal" page row is rendered, not the root page
+								</f:comment>
+
+								<td align="left" nowrap="nowrap">
+									<f:link.action
+										action="edit"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth}"
+										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
+									>
+										<f:format.raw>{data.depthData}{data.HTML}</f:format.raw>
+										{data.row.title -> f:format.crop(maxCharacters:20)}
+									</f:link.action>
+								</td>
+
+								<td>
+									<f:comment>
+										Edit link is workspace aware: If in ws, link to edit the ws overlay record is rendered
+									</f:comment>
+									<f:link.action
+										action="edit"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth}"
+										class="btn btn-default"
+										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
+									>
+										<core:icon identifier="actions-document-open" />
+									</f:link.action>
+								</td>
+								<f:if condition="{disableOldPermissionSystem}==0">
+								<td nowrap="nowrap">
+									<bu:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
+									<f:render
+										partial="Permission/Ownername"
+										arguments="{
+											pageId: '{data.row.uid}',
+											userId: '{data.row.perms_userid}',
+											username: '{bu:arrayElement(array:beUsers, key:data.row.perms_userid, subKey:\'username\')}'
+										}"
+									/>
+								</td>
+
+								<td nowrap="nowrap">
+									<bu:permissions permission="{data.row.perms_group}" scope="group" pageId="{data.row.uid}" />
+									<f:render
+										partial="Permission/Groupname"
+										arguments="{
+											pageId: '{data.row.uid}',
+											groupId: '{data.row.perms_groupid}',
+											groupname: '{bu:arrayElement(array:beGroups, key:data.row.perms_groupid, subKey:\'title\')}'
+										}"
+									/>
+								</td>
+
+								<td nowrap="nowrap">
+									<bu:permissions permission="{data.row.perms_everybody}" scope="everybody" pageId="{data.row.uid}" />
+								</td>
+								</f:if>
+								<td nowrap="nowrap">
+									<span id="el_{data.row.uid}">
+										<f:if condition="{data.row.editlock}">
+											<f:then>
+												<a
+													class="editlock btn btn-default"
+													data-page="{data.row.uid}"
+													data-lockstate="1"
+													title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr')}"
+												>
+													<core:icon identifier="actions-lock" />
+												</a>
+											</f:then>
+											<f:else>
+												<a
+													class="editlock btn btn-default"
+													data-page="{data.row.uid}"
+													data-lockstate="0"
+													title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:EditLock_descr2')}"
+												>
+													<core:icon identifier="actions-unlock" />
+												</a>
+											</f:else>
+										</f:if>
+									</span>
+								</td>
+
+								<td nowrap="nowrap"><small><strong><ba:arrayElement array="{aclList}" key="{data.row.uid}" subKey="meta.0.acls" /></strong> <f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:acls' /><br />
+									<strong><ba:arrayElement array="{aclList}" key="{data.row.uid}" subKey="meta.0.inherited" /></strong> <f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:aclsInherited' /></small>
+								</td>
+								<f:if condition="{userSelectedAcls->f:count()} > 0">
+									<f:for each="{userSelectedAcls}" as="userAcl" key="oid">
+									<td nowrap="nowrap">
+										<bu:permissions permission="{ba:arrayElement(array:aclList, key:data.row.uid, subKey:'0.{oid}.permissions')}" scope="useracl" pageId="{data.row.uid}" />
+										<f:alias map="{appliedAclPid: '{ba:arrayElement(array:aclList, key:data.row.uid, subKey:\'0.{oid}.pid\')}'}">
+											<f:if condition="{appliedAclPid}"><span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:recursiveAclPage' />{appliedAclPid}"></span></f:if>
+										</f:alias>
+									</td>
+									</f:for>
+								</f:if>
+
+
+								<td nowrap="nowrap"><small><strong><ba:arrayElement array="{aclList}" key="{data.row.uid}" subKey="meta.1.acls" /></strong> <f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:acls' /><br />
+									<strong><ba:arrayElement array="{aclList}" key="{data.row.uid}" subKey="meta.1.inherited" /></strong> <f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:aclsInherited' /></small>
+								</td>
+								<f:if condition="{groupSelectedAcls->f:count()} > 0">
+									<f:for each="{groupSelectedAcls}" as="groupAcl" key="oid">
+										<td nowrap="nowrap">
+										<ba:permissions permission="{ba:arrayElement(array:aclList, key:data.row.uid, subKey:'1.{oid}.permissions')}" scope="groupacl" pageId="{data.row.uid}" />
+										<f:alias map="{appliedAclPid: '{ba:arrayElement(array:aclList, key:data.row.uid, subKey:\'1.{oid}.pid\')}'}">
+											<f:if condition="{appliedAclPid}"><span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:recursiveAclPage' />{appliedAclPid}"></span></f:if>
+										</f:alias>
+										</td>
+									</f:for>
+								</f:if>
+
+							</f:then>
+
+							<f:else>
+								<f:comment>
+									Root page row is rendered
+								</f:comment>
+								<td align="left" nowrap="nowrap">
+									<f:format.raw>{data.HTML}</f:format.raw>
+									{data.row.title -> f:format.crop(maxCharacters:20)}
+								</td>
+								<td></td>
+								<f:if condition="{disableOldPermissionSystem}==0">
+								<td nowrap="nowrap"></td>
+								<td nowrap="nowrap"></td>
+								<td nowrap="nowrap"></td>
+								</f:if>
+								<td nowrap="nowrap"></td>
+							</f:else>
+						</f:if>
+					</tr>
+				</f:for>
+			</table>
+		</div>
+	</div>
+
+	<f:format.raw>{cshItem}</f:format.raw>
+
+	<h3><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:Legend" />:</h3>
+	<div class="beuser-legend">
+		<table>
+			<tr>
+				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap"><span class="number">1</span></td>
+				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:1_t" /></td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap"><span class="number">2</span></td>
+				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:16_t" /></td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap"><span class="number">3</span></td>
+				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:2_t" /></td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="vr"><span></span></td>
+				<td nowrap="nowrap" class="edge"><span><span></span></span></td>
+				<td nowrap="nowrap" class="hr"><span></span></td>
+				<td nowrap="nowrap"><span class="number">4</span></td>
+				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:4_t" /></td>
+			</tr>
+			<tr>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-granted" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td nowrap="nowrap"><core:icon identifier="status-status-permission-denied" /></td>
+				<td nowrap="nowrap"><span class="number">5</span></td>
+				<td nowrap="nowrap"><strong><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8" /></strong>: <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:8_t" /></td>
+			</tr>
+		</table>
+	</div>
+	<p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
+	<p>
+		<core:icon identifier="status-status-permission-granted" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Granted" /><br/>
+		<core:icon identifier="status-status-permission-denied" /> <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:A_Denied" />
+	</p>
+</f:section>

@@ -1,0 +1,53 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<tr class="tx_beacl-edit-acl-row" data-acluid="{pageAcl.uid}">
+	<td>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<f:render
+					partial="Permission/EditTypeSelector"
+					arguments="{
+						aclId: pageAcl.uid,
+						aclType: pageAcl.type,
+						options: typeOptions
+					}"
+				/>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<f:if condition="{pageAcl.type}==1">
+					<f:then>
+						<f:render
+							partial="Permission/EditUserGroupSelectors"
+							arguments="{
+								acl: pageAcl,
+								options: groupOptions
+							}"
+						/>
+					</f:then>
+					<f:else>
+						<f:render
+							partial="Permission/EditUserGroupSelectors"
+							arguments="{
+								acl: pageAcl,
+								options: userOptions
+							}"
+						/>
+					</f:else>
+				</f:if>
+			</div>
+		</div>
+	</td>
+	<td><input type="checkbox" name="check[perms_acl_{pageAcl.uid}][1]" onclick="TYPO3.Permissions.checkChange('check[perms_acl_{pageAcl.uid}]', 'tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]')" /></td>
+	<td><input type="checkbox" name="check[perms_acl_{pageAcl.uid}][5]" onclick="TYPO3.Permissions.checkChange('check[perms_acl_{pageAcl.uid}]', 'tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]')" /></td>
+	<td><input type="checkbox" name="check[perms_acl_{pageAcl.uid}][2]" onclick="TYPO3.Permissions.checkChange('check[perms_acl_{pageAcl.uid}]', 'tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]')" /></td>
+	<td><input type="checkbox" name="check[perms_acl_{pageAcl.uid}][3]" onclick="TYPO3.Permissions.checkChange('check[perms_acl_{pageAcl.uid}]', 'tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]')" /></td>
+	<td><input type="checkbox" name="check[perms_acl_{pageAcl.uid}][4]" onclick="TYPO3.Permissions.checkChange('check[perms_acl_{pageAcl.uid}]', 'tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]')" />
+	<input type="hidden" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][permissions]" value="{pageAcl.permissions}" />
+	<input type="hidden" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][pid]" value="{pageAcl.pid}" />
+	</td>
+	<td>
+		<input type="hidden" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][recursive]" value="0" />
+		<input type="checkbox" name="tx_beuser_system_beusertxpermission[data][tx_beacl_acl][{pageAcl.uid}][recursive]" value="1" {f:if(condition:'{pageAcl.recursive}==1', then: 'checked="checked"')} />
+	</td>
+	<td><a href="#" class="tx_beacl-edit-delete" data-acluid="{pageAcl.uid}" data-toggle="tooltip" data-placement="top" title="{f:translate(key: 'LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:delAcl')}"><core:icon identifier="actions-delete" /></a></td>
+</tr>

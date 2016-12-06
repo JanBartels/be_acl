@@ -1,0 +1,10 @@
+module.tx_beuser {
+	view.templateRootPaths  {
+		10 = EXT:beuser/Resources/Private/Templates/
+		20 = EXT:be_acl/Resources/Private/Templates/
+	}
+	view.partialRootPaths  {
+		10 = EXT:beuser/Resources/Private/Partials/
+		20 = EXT:be_acl/Resources/Private/Partials/
+	}
+}
