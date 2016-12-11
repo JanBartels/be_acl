@@ -1,7 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-$TCA['tx_beacl_acl'] = Array (
+return array(
 	"ctrl" => Array(
 		"title" => "LLL:EXT:be_acl/Resources/Private/Languages/locallang_db.xml:tx_beacl_acl",
 		"label" => "uid",
