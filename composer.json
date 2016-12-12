@@ -2,7 +2,7 @@
 	"name": "be-acl",
 	"description": "Backend Access Control Lists",
 	"type": "typo3-cms-extension",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"autoload": {
 		"psr-4": {
 			"JBartels\\BeAcl\\": "Classes/"
