@@ -7,5 +7,9 @@
 		"psr-4": {
 			"JBartels\\BeAcl\\": "Classes/"
 		}
+	},
+	"replace": {
+		"be_acl": "self.version",
+		"typo3-ter/be-acl": "self.version"
 	}
 }
