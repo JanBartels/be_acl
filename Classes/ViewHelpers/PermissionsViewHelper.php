@@ -37,8 +37,11 @@ class PermissionsViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\PermissionsVie
      * @return string
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $masks = array(1, 16, 2, 4, 8);
 
         if (empty(static::$permissionLabels)) {

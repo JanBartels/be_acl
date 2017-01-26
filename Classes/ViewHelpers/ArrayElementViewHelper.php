@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  */
 class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementViewHelper implements CompilableInterface
 {
+
     /**
      * Return array element by key.
      *
@@ -33,17 +34,20 @@ class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementV
      * @throws \TYPO3\CMS\Beuser\Exception
      * @return string
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
-    {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
         $array = $arguments['array'];
         $key = $arguments['key'];
         $subKey = $arguments['subKey'];
         $result = '';
 
         if (is_array($array)) {
-            $result = static::getValue($array,$key);
+            $result = static::getValue($array, $key);
             if (is_array($result) && $subKey) {
-                $result = static::getValue($result,$subKey);
+                $result = static::getValue($result, $subKey);
             }
         }
 
@@ -56,9 +60,10 @@ class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementV
         return $result;
     }
 
-    protected static function getValue($array,$key,$del='.',$default=NULL) {
-        try{
-            $result = ArrayUtility::getValueByPath($array,$key,'.');
+    protected static function getValue($array, $key, $del = '.', $default = null)
+    {
+        try {
+            $result = ArrayUtility::getValueByPath($array, (string)$key, '.');
         } catch (\RuntimeException $ex) {
             $result = $default;
         }

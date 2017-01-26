@@ -27,64 +27,69 @@ namespace JBartels\BeAcl\Cache;
 /**
  * The data that will be stored in the cache.
  */
-class PermissionCacheData {
+class PermissionCacheData
+{
 
-	/**
-	 * Array containing the results of the different permission clauses.
-	 *
-	 * @var array
-	 */
-	protected $permissionCache;
+    /**
+     * Array containing the results of the different permission clauses.
+     *
+     * @var array
+     */
+    protected $permissionCache;
 
-	/**
-	 * The timestamp when this record was created.
-	 *
-	 * @var int
-	 */
-	protected $timestamp;
+    /**
+     * The timestamp when this record was created.
+     *
+     * @var int
+     */
+    protected $timestamp;
 
-	/**
-	 * Initializes the current timestamp.
-	 */
-	public function __construct() {
-		$this->timestamp = time();
-		$this->permissionClauseCache = array();
-	}
+    /**
+     * Initializes the current timestamp.
+     */
+    public function __construct()
+    {
+        $this->timestamp = time();
+        $this->permissionClauseCache = array();
+    }
 
-	/**
-	 * Returns the matching permissions clause or NULL if none is stored.
-	 *
-	 * @param $requestedPermissions
-	 * @return string|null
-	 */
-	public function getPermissionClause($requestedPermissions) {
+    /**
+     * Returns the matching permissions clause or NULL if none is stored.
+     *
+     * @param $requestedPermissions
+     * @return string|null
+     */
+    public function getPermissionClause($requestedPermissions)
+    {
 
-		if (array_key_exists($requestedPermissions, $this->permissionClauseCache)) {
-			$permissionsClause = $this->permissionClauseCache[$requestedPermissions];
-			if (!empty($permissionsClause)) {
-				return $permissionsClause;
-			}
-		}
+        if (array_key_exists($requestedPermissions, $this->permissionClauseCache)) {
+            $permissionsClause = $this->permissionClauseCache[$requestedPermissions];
+            if (!empty($permissionsClause)) {
+                return $permissionsClause;
+            }
+        }
 
-		return NULL;
-	}
+        return null;
+    }
 
-	/**
-	 * Returns the timestamp when this cache entry was created.
-	 *
-	 * @return int
-	 */
-	public function getTimestamp() {
-		return $this->timestamp;
-	}
+    /**
+     * Returns the timestamp when this cache entry was created.
+     *
+     * @return int
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 
-	/**
-	 * Stores the given permissions clause in the cache.
-	 *
-	 * @param string $requestedPermissions
-	 * @param string $permissionsClause
-	 */
-	public function setPermissionClause($requestedPermissions, $permissionsClause) {
-		$this->permissionClauseCache[$requestedPermissions] = $permissionsClause;
-	}
+    /**
+     * Stores the given permissions clause in the cache.
+     *
+     * @param string $requestedPermissions
+     * @param string $permissionsClause
+     */
+    public function setPermissionClause($requestedPermissions, $permissionsClause)
+    {
+        $this->permissionClauseCache[$requestedPermissions] = $permissionsClause;
+    }
 }
