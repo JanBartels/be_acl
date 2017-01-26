@@ -58,7 +58,7 @@ class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementV
 
     protected static function getValue($array,$key,$del='.',$default=NULL) {
         try{
-            $result = ArrayUtility::getValueByPath($array,$key,'.');
+            $result = ArrayUtility::getValueByPath($array,(string)$key,'.');
         } catch (\RuntimeException $ex) {
             $result = $default;
         }
