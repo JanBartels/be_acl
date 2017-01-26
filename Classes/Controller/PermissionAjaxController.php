@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAjaxController
 {
+
     /**
      * View object
      * @var view \TYPO3\CMS\Fluid\View\StandaloneView
@@ -54,14 +55,16 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
      * Set the extension path
      * @param string $extPath
      */
-    protected function setExtPath($extPath = null) {
+    protected function setExtPath($extPath = null)
+    {
         $this->extPath = empty($extPath) ? ExtensionManagementUtility::extPath('be_acl') : $extPath;
     }
 
     /**
      * Initialize the viewz
      */
-    protected function initializeView() {
+    protected function initializeView()
+    {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setPartialRootPaths(array('default' => $this->extPath . 'Resources/Private/Partials'));
         $this->view->assign('pageId', $this->conf['page']);
@@ -81,43 +84,43 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
 
         // Handle action
         $action = $this->conf['action'];
-        if ($this->conf['page'] > 0 && in_array($action,$handledActions)) {
-           return $this->handleAction($request,$response,$action);
-        }
-        // Action handled by parent
+        if ($this->conf['page'] > 0 && in_array($action, $handledActions)) {
+            return $this->handleAction($request, $response, $action);
+        } // Action handled by parent
         else {
-            return parent::dispatch($request,$response);
+            return parent::dispatch($request, $response);
         }
     }
 
-    protected function handleAction(ServerRequestInterface $request, ResponseInterface $response, $action) {
+    protected function handleAction(ServerRequestInterface $request, ResponseInterface $response, $action)
+    {
         $methodName = GeneralUtility::underscoredToLowerCamelCase($action);
         if (method_exists($this, $methodName)) {
-            return call_user_func_array(array($this, $methodName), [$request,$response]);
-         }
-         else {
+            return call_user_func_array(array($this, $methodName), [$request, $response]);
+        } else {
             $response->getBody()->write('Action method not found');
             $response = $response->withStatus(400);
             return $response;
-         }
+        }
     }
 
-    protected function deleteAcl(ServerRequestInterface $request, ResponseInterface $response) {
+    protected function deleteAcl(ServerRequestInterface $request, ResponseInterface $response)
+    {
         $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xml');
         $GLOBALS['LANG']->getLL('aclUsers');
 
         $postData = $request->getParsedBody();
-        $aclUid = !empty($postData['acl']) ? $postData['acl'] : NULL;
+        $aclUid = !empty($postData['acl']) ? $postData['acl'] : null;
 
-        if(!MathUtility::canBeInterpretedAsInteger($aclUid)) {
-            return $this->errorResponse($response,$GLOBALS['LANG']->getLL('noAclId'),400);
+        if (!MathUtility::canBeInterpretedAsInteger($aclUid)) {
+            return $this->errorResponse($response, $GLOBALS['LANG']->getLL('noAclId'), 400);
         }
-        $aclUid = (int) $aclUid;
+        $aclUid = (int)$aclUid;
         // Prepare command map
         $cmdMap = [
             $this->table => [
-                    $aclUid => ['delete' => 1]
-                ]
+                $aclUid => ['delete' => 1]
+            ]
         ];
 
         try {
@@ -125,23 +128,23 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = 0;
             $tce->start(array(), $cmdMap);
-            $this->checkModifyAccess($this->table,$aclUid,$tce);
+            $this->checkModifyAccess($this->table, $aclUid, $tce);
             $tce->process_cmdmap();
         } catch (\Exception $ex) {
-            return $this->errorResponse($response,$ex->getMessage(),403);
+            return $this->errorResponse($response, $ex->getMessage(), 403);
         }
 
         $body = [
-          'title' => $GLOBALS['LANG']->getLL('aclSuccess'),
-          'message' => $GLOBALS['LANG']->getLL('aclDeleted')
+            'title' => $GLOBALS['LANG']->getLL('aclSuccess'),
+            'message' => $GLOBALS['LANG']->getLL('aclDeleted')
         ];
         // Return result
         $response->getBody()->write(json_encode($body));
         return $response;
-
     }
 
-    protected function checkModifyAccess($table,$id, DataHandler $tcemainObj) {
+    protected function checkModifyAccess($table, $id, DataHandler $tcemainObj)
+    {
         // Check modify access
         $modifyAccessList = $tcemainObj->checkModifyAccessList($table);
         // Check basic permissions and circumstances:
@@ -152,20 +155,21 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
 
         // Check table / id
         if (!$GLOBALS['TCA'][$table] || !$id) {
-           throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'),$id,$table));
-           return;
+            throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
+            return;
         }
 
-         // Check edit access
+        // Check edit access
         $hasEditAccess = $tcemainObj->BE_USER->recordEditAccessInternals($table, $id, false, false, true);
         if (!$hasEditAccess) {
-            throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'),$id,$table));
+            throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
             return;
         }
     }
 
-     protected function errorResponse(ResponseInterface $response,$reason,$status=500) {
-        $response = $response->withStatus($status,$reason);
+    protected function errorResponse(ResponseInterface $response, $reason, $status = 500)
+    {
+        $response = $response->withStatus($status, $reason);
         return $response;
     }
 }
