@@ -9,7 +9,7 @@
 		}
 	},
 	"require": {
-		"typo3/cms-core": "~8.4.1"
+		"typo3/cms-core": ">=7.6.0,<=8.9.99"
 	},
 	"replace": {
 		"be_acl": "self.version",
