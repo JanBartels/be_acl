@@ -68,7 +68,6 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
-
         // Add custom JS for Acl permissions
         if ($view instanceof BackendTemplateView) {
             $view->getModuleTemplate()->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/BeAcl/AclPermissions');
@@ -104,7 +103,8 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
             $usersSelected = array_filter($userAcls, function ($var) {
                 return !empty($var['selected']);
             });
-        } // No filter enabled, so show all user ACLs
+        }
+         // No filter enabled, so show all user ACLs
         else {
             $usersSelected = $userAcls;
         }
@@ -126,7 +126,8 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
             $groupsSelected = array_filter($groupAcls, function ($var) {
                 return !empty($var['selected']);
             });
-        } // No filter enabled, so show all group ACLs
+        }
+        // No filter enabled, so show all group ACLs
         else {
             $groupsSelected = $groupAcls;
         }
@@ -321,7 +322,8 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
                         'recursive' => $result['recursive'],
                         'pid' => $result['pid']
                     ];
-                } // Group type ACLs
+                }
+                // Group type ACLs
                 elseif ($result['type'] == 1
                     && in_array($result['object_id'], $groups)
                     && !array_key_exists($result['object_id'], $startPerms[1])
@@ -390,8 +392,9 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
             if ($result['recursive'] == 0) {
                 $this->aclList[$pageId][$result['type']][$result['object_id']] = $aclData;
                 $hasNoRecursive[$pageId][$result['type']][$result['object_id']] = $aclData;
-            } // Recursive ACL
+            }
             else {
+                // Recursive ACL
                 // Add to parent ACLs for sub-pages
                 $parentACLs[$result['type']][$result['object_id']] = $aclData;
                 // If there also is a non-recursive ACL for this object_id, that takes precedence

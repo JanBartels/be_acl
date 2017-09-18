@@ -65,11 +65,7 @@ class TimestampUtility implements SingletonInterface
         $lastPermissionChangeTimestamp = $this->getLastPermissionChangeTimestampFromCache();
         $timestamp = intval($timestamp);
 
-        if ($lastPermissionChangeTimestamp < $timestamp) {
-            return true;
-        } else {
-            return false;
-        }
+        return ($lastPermissionChangeTimestamp < $timestamp);
     }
 
     /**
@@ -90,7 +86,7 @@ class TimestampUtility implements SingletonInterface
     {
         $this->initializeCache();
         $timestamp = time() + $offset;
-        $this->timestampCache->set(self::CACHE_IDENTIFIER_TIMESTAMP, (string)$timestamp);
+        $this->timestampCache->set(static::CACHE_IDENTIFIER_TIMESTAMP, (string)$timestamp);
         $this->timestampCacheFirstLevel = $timestamp;
     }
 
@@ -108,8 +104,8 @@ class TimestampUtility implements SingletonInterface
         }
 
         // If timestamp is found in second level cache, fill first level cache and return value.
-        if ($this->timestampCache->has(self::CACHE_IDENTIFIER_TIMESTAMP)) {
-            $timestamp = (int)$this->timestampCache->get(self::CACHE_IDENTIFIER_TIMESTAMP);
+        if ($this->timestampCache->has(static::CACHE_IDENTIFIER_TIMESTAMP)) {
+            $timestamp = (int)$this->timestampCache->get(static::CACHE_IDENTIFIER_TIMESTAMP);
             $this->timestampCacheFirstLevel = $timestamp;
             return $timestamp;
         }

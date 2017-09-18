@@ -204,16 +204,16 @@ class PermissionCache implements SingletonInterface
      *
      * @param string $requestedPermissions
      * @return string
-     * @throws \RuntimeException
+     * @throws \JBartels\BeAcl\Exception\RuntimeException
      */
     protected function getCacheIdentifier($requestedPermissions = '')
     {
 
         if (!isset($this->backendUser)) {
-            throw new \RuntimeException('The Backend user needs to be initializes before the cache identifier can be generated.');
+            throw new \JBartels\BeAcl\Exception\RuntimeException('The Backend user needs to be initializes before the cache identifier can be generated.');
         }
 
-        $identifier = self::CACHE_IDENTIFIER_PERMISSIONS . '_' . $this->backendUser->user['uid'];
+        $identifier = static::CACHE_IDENTIFIER_PERMISSIONS . '_' . $this->backendUser->user['uid'];
 
         $requestedPermissions = trim($requestedPermissions);
         if ($requestedPermissions !== '') {

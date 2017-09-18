@@ -99,8 +99,7 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
             return call_user_func_array(array($this, $methodName), [$request, $response]);
         } else {
             $response->getBody()->write('Action method not found');
-            $response = $response->withStatus(400);
-            return $response;
+            return $response->withStatus(400);
         }
     }
 
@@ -149,27 +148,23 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
         $modifyAccessList = $tcemainObj->checkModifyAccessList($table);
         // Check basic permissions and circumstances:
         if (!isset($GLOBALS['TCA'][$table]) || $tcemainObj->tableReadOnly($table) || !is_array($tcemainObj->cmdmap[$table]) || !$modifyAccessList) {
-            throw new \RuntimeException($GLOBALS['LANG']->getLL('noPermissionToModifyAcl'));
-            return;
+            throw new \JBartels\BeAcl\Exception\RuntimeException($GLOBALS['LANG']->getLL('noPermissionToModifyAcl'));
         }
 
         // Check table / id
         if (!$GLOBALS['TCA'][$table] || !$id) {
-            throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
-            return;
+            throw new \JBartels\BeAcl\Exception\RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
         }
 
         // Check edit access
         $hasEditAccess = $tcemainObj->BE_USER->recordEditAccessInternals($table, $id, false, false, true);
         if (!$hasEditAccess) {
-            throw new \RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
-            return;
+            throw new \JBartels\BeAcl\Exception\RuntimeException(sprintf($GLOBALS['LANG']->getLL('noEditAccessToAclRecord'), $id, $table));
         }
     }
 
     protected function errorResponse(ResponseInterface $response, $reason, $status = 500)
     {
-        $response = $response->withStatus($status, $reason);
-        return $response;
+        return $response->withStatus($status, $reason);
     }
 }
