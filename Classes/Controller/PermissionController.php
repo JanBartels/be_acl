@@ -92,7 +92,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         $this->view->assign('disableOldPermissionSystem', $disableOldPermissionSystem);
         $this->view->assign('enableFilterSelector', $enableFilterSelector);
 
-        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xlf');
 
         /*
          *  User ACLs
@@ -163,7 +163,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
 
         $this->view->assign('disableOldPermissionSystem', $disableOldPermissionSystem);
 
-        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xlf');
 
         // ACL CODE
         $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_beacl_acl', 'pid=' . (int)$this->id);
@@ -178,7 +178,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         foreach (array(1 => 'Group', 0 => 'User') as $type => $label) {
             $option = new \stdClass();
             $option->key = $type;
-            $option->value = LocalizationUtility::translate('LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xml:acl' . $label,
+            $option->value = LocalizationUtility::translate('LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xlf:acl' . $label,
                 'be_acl');
             $userGroupSelectorOptions[] = $option;
         }

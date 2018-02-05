@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" data="2018-02-05T22-04-49" product-name="zsb">
+    <header/>
+    <body>
+      <trans-unit id="tx_beacl_acl" xml:space="preserve">
+        <source>Access Control Lists</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.type.I.0" xml:space="preserve">
+        <source>User</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.type.I.1" xml:space="preserve">
+        <source>Group</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.type" xml:space="preserve">
+        <source>ACL type</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.object_id" xml:space="preserve">
+        <source>ID of User/Group</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions.I.0" xml:space="preserve">
+        <source>Show page</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions.I.1" xml:space="preserve">
+        <source>Edit page</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions.I.2" xml:space="preserve">
+        <source>Delete page</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions.I.3" xml:space="preserve">
+        <source>New pages</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions.I.4" xml:space="preserve">
+        <source>Edit content</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.permissions" xml:space="preserve">
+        <source>Permissions</source>
+      </trans-unit>
+      <trans-unit id="tx_beacl_acl.recursive" xml:space="preserve">
+        <source>Recursive</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

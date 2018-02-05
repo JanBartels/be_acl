@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" data="2018-02-05T22-07-08" product-name="zsb">
+    <header/>
+    <body>
+      <trans-unit id="recursiveAcl" xml:space="preserve">
+        <source>Recursive</source>
+      </trans-unit>
+      <trans-unit id="addAcl" xml:space="preserve">
+        <source>Add ACL</source>
+      </trans-unit>
+      <trans-unit id="delAcl" xml:space="preserve">
+        <source>Delete ACL</source>
+      </trans-unit>
+      <trans-unit id="saveAndClose" xml:space="preserve">
+        <source>Save and Close</source>
+      </trans-unit>
+      <trans-unit id="aclUsers" xml:space="preserve">
+        <source>ACL Users</source>
+      </trans-unit>
+      <trans-unit id="aclGroups" xml:space="preserve">
+        <source>ACL Groups</source>
+      </trans-unit>
+      <trans-unit id="aclUser" xml:space="preserve">
+        <source>User</source>
+      </trans-unit>
+      <trans-unit id="aclGroup" xml:space="preserve">
+        <source>Group</source>
+      </trans-unit>
+      <trans-unit id="aclObjSelUpdate" xml:space="preserve">
+        <source>Update!</source>
+      </trans-unit>
+      <trans-unit id="recursiveAclPage" xml:space="preserve">
+        <source>ACL pid=</source>
+      </trans-unit>
+      <trans-unit id="noPageAcls" xml:space="preserve">
+        <source>No ACLs assigned to this page</source>
+      </trans-unit>
+      <trans-unit id="acls" xml:space="preserve">
+        <source>ACL(s)</source>
+      </trans-unit>
+      <trans-unit id="aclsInherited" xml:space="preserve">
+        <source>inherited</source>
+      </trans-unit>
+      <trans-unit id="aclSuccess" xml:space="preserve">
+        <source>Success</source>
+      </trans-unit>
+      <trans-unit id="aclError" xml:space="preserve">
+        <source>Error</source>
+      </trans-unit>
+      <trans-unit id="aclDeleted" xml:space="preserve">
+        <source>ACL deleted</source>
+      </trans-unit>
+      <trans-unit id="noAclId" xml:space="preserve">
+        <source>No ACL id given</source>
+      </trans-unit>
+      <trans-unit id="noPermissionToModifyAcl" xml:space="preserve">
+        <source>Attempt to modify ACL table without permission</source>
+      </trans-unit>
+      <trans-unit id="invalidAclTableOrId" xml:space="preserve">
+        <source>Record "%d" or table "%s" is invalid</source>
+      </trans-unit>
+      <trans-unit id="noEditAccessToAclRecord" xml:space="preserve">
+        <source>Attempt to modify record "%d" on table "%s" without permission</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

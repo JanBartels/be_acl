@@ -105,7 +105,7 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
 
     protected function deleteAcl(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:be_acl/Resources/Private/Languages/locallang_perm.xlf');
         $GLOBALS['LANG']->getLL('aclUsers');
 
         $postData = $request->getParsedBody();

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="de" datatype="plaintext" original="messages" data="2018-02-05T22-07-08" product-name="zsb">
+    <header/>
+    <body>
+      <trans-unit id="recursiveAcl" xml:space="preserve">
+        <source>Recursive</source>
+        <target>Rekursiv</target>
+      </trans-unit>
+      <trans-unit id="addAcl" xml:space="preserve">
+        <source>Add ACL</source>
+        <target>ACL hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="delAcl" xml:space="preserve">
+        <source>Delete ACL</source>
+        <target>ACL löschen</target>
+      </trans-unit>
+      <trans-unit id="saveAndClose" xml:space="preserve">
+        <source>Save and Close</source>
+        <target>Speichern und Schließen</target>
+      </trans-unit>
+      <trans-unit id="aclUsers" xml:space="preserve">
+        <source>ACL Users</source>
+        <target>Benutzer ACL</target>
+      </trans-unit>
+      <trans-unit id="aclGroups" xml:space="preserve">
+        <source>ACL Groups</source>
+        <target>Gruppen ACL</target>
+      </trans-unit>
+      <trans-unit id="aclUser" xml:space="preserve">
+        <source>User</source>
+        <target>Benutzer</target>
+      </trans-unit>
+      <trans-unit id="aclGroup" xml:space="preserve">
+        <source>Group</source>
+        <target>Gruppe</target>
+      </trans-unit>
+      <trans-unit id="aclObjSelUpdate" xml:space="preserve">
+        <source>Update!</source>
+        <target>Aktualisieren!</target>
+      </trans-unit>
+      <trans-unit id="recursiveAclPage" xml:space="preserve">
+        <source>ACL pid=</source>
+        <target>ACL pid=</target>
+      </trans-unit>
+      <trans-unit id="noPageAcls" xml:space="preserve">
+        <source>No ACLs assigned to this page</source>
+        <target>Dieser Seite sind keine ACL zugewiesen</target>
+      </trans-unit>
+      <trans-unit id="acls" xml:space="preserve">
+        <source>ACL(s)</source>
+        <target>ACL(s)</target>
+      </trans-unit>
+      <trans-unit id="aclsInherited" xml:space="preserve">
+        <source>inherited</source>
+        <target>geerbt</target>
+      </trans-unit>
+      <trans-unit id="aclSuccess" xml:space="preserve">
+        <source>Success</source>
+        <target>Erfolg</target>
+      </trans-unit>
+      <trans-unit id="aclError" xml:space="preserve">
+        <source>Error</source>
+        <target>Fehler</target>
+      </trans-unit>
+      <trans-unit id="aclDeleted" xml:space="preserve">
+        <source>ACL deleted</source>
+        <target>ACL gelöscht</target>
+      </trans-unit>
+      <trans-unit id="noAclId" xml:space="preserve">
+        <source>No ACL id given</source>
+        <target>Keine ACL-ID angegeben</target>
+      </trans-unit>
+      <trans-unit id="noPermissionToModifyAcl" xml:space="preserve">
+        <source>Attempt to modify ACL table without permission</source>
+        <target>Versuch, die ACL-Tabelle ohne Erlaubnis zu ändern</target>
+      </trans-unit>
+      <trans-unit id="invalidAclTableOrId" xml:space="preserve">
+        <source>Record "%d" or table "%s" is invalid</source>
+        <target>Datensatz "%d" oder Tabelle "%s" ist ungültig</target>
+      </trans-unit>
+      <trans-unit id="noEditAccessToAclRecord" xml:space="preserve">
+        <source>Attempt to modify record "%d" on table "%s" without permission</source>
+        <target>Versuch, den Datensatz "%d" der Tabelle "%s" ohne Erlaubnis zu ändern</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
