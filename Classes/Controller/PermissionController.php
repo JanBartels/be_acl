@@ -60,6 +60,23 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
      *****************************/
 
     /**
+     * Initialize action
+     *
+     * @return void
+     */
+    protected function initializeAction()
+    {
+        parent::initializeAction();
+
+        if(empty($this->returnUrl)) {
+            $this->returnUrl = $this->uriBuilder->reset()->setArguments([
+                'action' => 'index',
+                'id' => $this->id
+                ])->buildBackendUri();
+        }
+    }
+
+    /**
      * Initializes view
      *
      * @param ViewInterface $view The view to be initialized
