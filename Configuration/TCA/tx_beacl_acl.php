@@ -71,8 +71,8 @@ return array(
 		),
 	),
 	'types' => Array (
-		'0' => Array('showitem' => 'type;;;;1-1-1, object_id, permissions, recursive'),
-		'1' => Array('showitem' => 'type;;;;1-1-1, object_id, permissions, recursive')
+		'0' => Array('showitem' => 'type, object_id, permissions, recursive'),
+		'1' => Array('showitem' => 'type, object_id, permissions, recursive')
 	),
 	'palettes' => Array (
 		'1' => Array('showitem' => '')
