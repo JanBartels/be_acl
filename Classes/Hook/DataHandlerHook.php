@@ -1,5 +1,8 @@
 <?php
+
 namespace JBartels\BeAcl\Hook;
+
+use JBartels\BeAcl\Cache\PermissionCache;
 
 /***************************************************************
  *  Copyright notice
@@ -30,33 +33,31 @@ namespace JBartels\BeAcl\Hook;
  */
 class DataHandlerHook
 {
-
     /**
      * This hook is called when a record is added or edited.
      * When a new page is created or a tx_beacl_acl record is changed
      * the permission cache is flushed.
      *
-     * @param string $status TCEmain operation status, either 'new' or 'update'.
-     * @param string $table The DB table the operation was carried out on.
-     * @param mixed $recordId The record's uid for update records, a string to look the record's uid up after it has
-     *     been created.
-     * @param array $updatedFields Array of changed fiels and their new values.
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain TCEmain parent object.
-     * @return void
+     * @param string                                   $status        TCEmain operation status, either 'new' or 'update'
+     * @param string                                   $table         the DB table the operation was carried out on
+     * @param mixed                                    $recordId      the record's uid for update records, a string to look the record's uid up after it has
+     *                                                                been created
+     * @param array                                    $updatedFields array of changed fiels and their new values
+     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain       TCEmain parent object
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $recordId, $updatedFields, $tceMain)
     {
-
         // When a new page is created we update the permission timestamp
         // in the cache so that all Backend users recalculate their
         // permissions.
-        if ($table == 'pages' && $status == 'new') {
+        if ('pages' == $table && 'new' == $status) {
             $this->flushPermissionCache();
+
             return;
         }
 
         // If a ACL is modified or created we also flush the cache
-        if ($table == 'tx_beacl_acl') {
+        if ('tx_beacl_acl' == $table) {
             $this->flushPermissionCache();
         }
     }
@@ -65,12 +66,11 @@ class DataHandlerHook
      * This hook is called when a record is moved or deleted.
      * It flushes the permission cache when a tx_beacl_acl has changed.
      *
-     * @param string $command The TCE command.
-     * @param string $table The record's table.
-     * @param integer $recordId The record's uid.
-     * @param array $commandValue The commands value, typically an array with more detailed command information.
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain The TCEmain parent object.
-     * @return void
+     * @param string                                   $command      the TCE command
+     * @param string                                   $table        the record's table
+     * @param int                                      $recordId     the record's uid
+     * @param array                                    $commandValue the commands value, typically an array with more detailed command information
+     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain      the TCEmain parent object
      */
     public function processCmdmap_postProcess(
         $command,
@@ -79,9 +79,8 @@ class DataHandlerHook
         $commandValue,
         \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
     ) {
-
         // This is required to take care of deleted ACLs.
-        if ($table == 'tx_beacl_acl') {
+        if ('tx_beacl_acl' == $table) {
             $this->flushPermissionCache();
         }
     }
@@ -92,8 +91,7 @@ class DataHandlerHook
     protected function flushPermissionCache()
     {
         /** @var \JBartels\BeAcl\Cache\PermissionCache $permissionCache */
-        $permissionCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JBartels\\BeAcl\\Cache\\PermissionCache');
+        $permissionCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(PermissionCache::class);
         $permissionCache->flushCache();
     }
-
 }

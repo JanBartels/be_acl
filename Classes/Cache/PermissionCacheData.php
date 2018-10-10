@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\Cache;
 
 /***************************************************************
@@ -29,7 +30,6 @@ namespace JBartels\BeAcl\Cache;
  */
 class PermissionCacheData
 {
-
     /**
      * Array containing the results of the different permission clauses.
      *
@@ -50,18 +50,18 @@ class PermissionCacheData
     public function __construct()
     {
         $this->timestamp = time();
-        $this->permissionClauseCache = array();
+        $this->permissionClauseCache = [];
     }
 
     /**
      * Returns the matching permissions clause or NULL if none is stored.
      *
      * @param $requestedPermissions
+     *
      * @return string|null
      */
     public function getPermissionClause($requestedPermissions)
     {
-
         if (array_key_exists($requestedPermissions, $this->permissionClauseCache)) {
             $permissionsClause = $this->permissionClauseCache[$requestedPermissions];
             if (!empty($permissionsClause)) {

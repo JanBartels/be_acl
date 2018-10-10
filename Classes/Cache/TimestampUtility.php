@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\Cache;
 
 /***************************************************************
@@ -24,6 +25,7 @@ namespace JBartels\BeAcl\Cache;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -32,7 +34,6 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class TimestampUtility implements SingletonInterface
 {
-
     const CACHE_IDENTIFIER_TIMESTAMP = 'last_permission_change_timestamp';
 
     /**
@@ -55,17 +56,17 @@ class TimestampUtility implements SingletonInterface
      * timestamp.
      *
      * @param int $timestamp
+     *
      * @return bool
      */
     public function permissionTimestampIsValid($timestamp)
     {
-
         $this->initializeCache();
 
         $lastPermissionChangeTimestamp = $this->getLastPermissionChangeTimestampFromCache();
         $timestamp = intval($timestamp);
 
-        return ($lastPermissionChangeTimestamp < $timestamp);
+        return $lastPermissionChangeTimestamp < $timestamp;
     }
 
     /**
@@ -77,10 +78,9 @@ class TimestampUtility implements SingletonInterface
     }
 
     /**
-     * Updates the timestamp in the cache with the current timestamp
+     * Updates the timestamp in the cache with the current timestamp.
      *
      * @param int $offset
-     * @return void
      */
     public function updateTimestamp($offset = 0)
     {
@@ -97,7 +97,6 @@ class TimestampUtility implements SingletonInterface
      */
     protected function getLastPermissionChangeTimestampFromCache()
     {
-
         // Return directly if timestamp is found in the first level cache.
         if (isset($this->timestampCacheFirstLevel)) {
             return $this->timestampCacheFirstLevel;
@@ -107,6 +106,7 @@ class TimestampUtility implements SingletonInterface
         if ($this->timestampCache->has(static::CACHE_IDENTIFIER_TIMESTAMP)) {
             $timestamp = (int)$this->timestampCache->get(static::CACHE_IDENTIFIER_TIMESTAMP);
             $this->timestampCacheFirstLevel = $timestamp;
+
             return $timestamp;
         }
 
@@ -114,19 +114,16 @@ class TimestampUtility implements SingletonInterface
     }
 
     /**
-     * Initializes the timestamp cache
-     *
-     * @return void
+     * Initializes the timestamp cache.
      */
     protected function initializeCache()
     {
-
         if (isset($this->timestampCache)) {
             return;
         }
 
         /** @var \TYPO3\CMS\Core\Cache\CacheManager $cacheManager */
-        $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\Core\\Cache\\CacheManager');
+        $cacheManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(CacheManager::class);
         $this->setTimestampCache($cacheManager->getCache('tx_be_acl_timestamp'));
     }
 }
