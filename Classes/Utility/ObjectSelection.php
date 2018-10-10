@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\Utility;
 
 /***************************************************************
@@ -31,18 +32,15 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class ObjectSelection
 {
-
     /**
      * Populates the "object_id" field of a "tx_beacl_acl" record depending on
-     * whether the field "type" is set to "User" or "Group"
+     * whether the field "type" is set to "User" or "Group".
      *
-     * @param array $PA field configuration
+     * @param array  $PA   field configuration
      * @param object $fobj
-     * @return void
      */
-    function select($PA, $fobj)
+    public function select($PA, $fobj)
     {
-
         if (!array_key_exists('row', $PA)) {
             return;
         }
@@ -52,19 +50,18 @@ class ObjectSelection
         }
 
         // Resetting the SELECT field items
-        $PA['items'] = array(
-            0 => array(
+        $PA['items'] = [
+            0 => [
                 0 => '',
                 1 => '',
-            ),
-        );
+            ],
+        ];
         $type = isset($PA['row']['type'][0]) ? $PA['row']['type'][0] : null;
         // Get users or groups - The function copies functionality of the method acl_objectSelector()
         // of ux_SC_mod_web_perm_index class as for non-admins it returns only:
         // 1) Users which are members of the groups of the current user.
         // 2) Groups that the current user is a member of.
         switch ($type) {
-
             // In case users shall be returned
             case '0':
                 $items = BackendUtility::getUserNames();
@@ -73,10 +70,10 @@ class ObjectSelection
                 }
 
                 foreach ($items as $row) {
-                    $PA['items'][] = array(
+                    $PA['items'][] = [
                         0 => $row['username'],
                         1 => $row['uid'],
-                    );
+                    ];
                 }
                 break;
 
@@ -88,10 +85,10 @@ class ObjectSelection
                 }
 
                 foreach ($items as $row) {
-                    $PA['items'][] = array(
+                    $PA['items'][] = [
                         0 => $row['title'],
                         1 => $row['uid'],
-                    );
+                    ];
                 }
                 break;
 

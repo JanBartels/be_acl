@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\ViewHelpers;
 
 /*
@@ -16,7 +17,6 @@ namespace JBartels\BeAcl\ViewHelpers;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
@@ -27,14 +27,15 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
  */
 class PermissionsViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\PermissionsViewHelper implements CompilableInterface
 {
-
     /**
-     * Implementing CompilableInterface suppresses object instantiation of this view helper
+     * Implementing CompilableInterface suppresses object instantiation of this view helper.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
+     * @param array                     $arguments
+     * @param \Closure                  $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     *
      * @return string
+     *
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      */
     public static function renderStatic(
@@ -42,7 +43,7 @@ class PermissionsViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\PermissionsVie
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $masks = array(1, 16, 2, 4, 8);
+        $masks = [1, 16, 2, 4, 8];
 
         if (empty(static::$permissionLabels)) {
             foreach ($masks as $mask) {

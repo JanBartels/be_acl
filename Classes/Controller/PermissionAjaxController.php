@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\Controller;
 
 /*
@@ -16,43 +17,43 @@ namespace JBartels\BeAcl\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * This class extends the permissions module in the TYPO3 Backend to provide
  * convenient methods of editing of page permissions (including page ownership
- * (user and group)) via new AjaxRequestHandler facility
+ * (user and group)) via new AjaxRequestHandler facility.
  */
 class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAjaxController
 {
-
     /**
-     * View object
-     * @var view \TYPO3\CMS\Fluid\View\StandaloneView
+     * View object.
+     *
+     * @var StandaloneView
      */
     protected $view;
 
     /**
-     * Extension path
+     * Extension path.
+     *
      * @var string
      */
     protected $extPath;
 
     /**
-     * ACL table
+     * ACL table.
+     *
      * @var string
      */
     protected $table = 'tx_beacl_acl';
 
     /**
-     * Set the extension path
+     * Set the extension path.
+     *
      * @param string $extPath
      */
     protected function setExtPath($extPath = null)
@@ -61,12 +62,12 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
     }
 
     /**
-     * Initialize the viewz
+     * Initialize the viewz.
      */
     protected function initializeView()
     {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
-        $this->view->setPartialRootPaths(array('default' => $this->extPath . 'Resources/Private/Partials'));
+        $this->view->setPartialRootPaths(['default' => $this->extPath . 'Resources/Private/Partials']);
         $this->view->assign('pageId', $this->conf['page']);
     }
 
@@ -74,7 +75,8 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param ResponseInterface      $response
+     *
      * @return ResponseInterface
      */
     public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
@@ -87,20 +89,19 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
         if ($this->conf['page'] > 0 && in_array($action, $handledActions)) {
             return $this->handleAction($request, $response, $action);
         } // Action handled by parent
-        else {
-            return parent::dispatch($request, $response);
-        }
+
+        return parent::dispatch($request, $response);
     }
 
     protected function handleAction(ServerRequestInterface $request, ResponseInterface $response, $action)
     {
         $methodName = GeneralUtility::underscoredToLowerCamelCase($action);
         if (method_exists($this, $methodName)) {
-            return call_user_func_array(array($this, $methodName), [$request, $response]);
-        } else {
-            $response->getBody()->write('Action method not found');
-            return $response->withStatus(400);
+            return call_user_func_array([$this, $methodName], [$request, $response]);
         }
+        $response->getBody()->write('Action method not found');
+
+        return $response->withStatus(400);
     }
 
     protected function deleteAcl(ServerRequestInterface $request, ResponseInterface $response)
@@ -118,15 +119,15 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
         // Prepare command map
         $cmdMap = [
             $this->table => [
-                $aclUid => ['delete' => 1]
-            ]
+                $aclUid => ['delete' => 1],
+            ],
         ];
 
         try {
             // Process command map
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->stripslashes_values = 0;
-            $tce->start(array(), $cmdMap);
+            $tce->start([], $cmdMap);
             $this->checkModifyAccess($this->table, $aclUid, $tce);
             $tce->process_cmdmap();
         } catch (\Exception $ex) {
@@ -135,10 +136,11 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
 
         $body = [
             'title' => $GLOBALS['LANG']->getLL('aclSuccess'),
-            'message' => $GLOBALS['LANG']->getLL('aclDeleted')
+            'message' => $GLOBALS['LANG']->getLL('aclDeleted'),
         ];
         // Return result
         $response->getBody()->write(json_encode($body));
+
         return $response;
     }
 

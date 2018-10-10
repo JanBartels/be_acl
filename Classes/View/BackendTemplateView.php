@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\View;
 
 /***************************************************************
@@ -29,9 +30,9 @@ namespace JBartels\BeAcl\View;
  */
 class BackendTemplateView extends \TYPO3\CMS\Backend\View\BackendTemplateView
 {
-
     /**
      * Resolves the template root to be used inside other paths. Defaults to template view.
+     *
      * @see \TYPO3\CMS\Fluid\View\TemplateView::getTemplateRootPaths()
      *
      * @return array Path(s) to template root directory
@@ -43,10 +44,9 @@ class BackendTemplateView extends \TYPO3\CMS\Backend\View\BackendTemplateView
 
     /**
      * Set the root path(s) to the templates.
-     * If set, overrides the one determined from $this->templateRootPathPattern
-     * @see \TYPO3\CMS\Fluid\View\TemplateView::setTemplateRootPaths()
+     * If set, overrides the one determined from $this->templateRootPathPattern.
      *
-     * @return void
+     * @see \TYPO3\CMS\Fluid\View\TemplateView::setTemplateRootPaths()
      */
     public function setTemplateRootPaths(array $templateRootPaths)
     {
@@ -55,6 +55,7 @@ class BackendTemplateView extends \TYPO3\CMS\Backend\View\BackendTemplateView
 
     /**
      * Resolves the partial root to be used inside other paths.
+     *
      * @see \TYPO3\CMS\Fluid\View\TemplateView::getPartialRootPaths()
      *
      * @return array Path(s) to partial root directory
@@ -66,14 +67,12 @@ class BackendTemplateView extends \TYPO3\CMS\Backend\View\BackendTemplateView
 
     /**
      * Set the root path(s) to the partials.
-     * If set, overrides the one determined from $this->partialRootPathPattern
-     * @see \TYPO3\CMS\Fluid\View\TemplateView::setPartialRootPaths()
+     * If set, overrides the one determined from $this->partialRootPathPattern.
      *
-     * @return void
+     * @see \TYPO3\CMS\Fluid\View\TemplateView::setPartialRootPaths()
      */
     public function setPartialRootPaths(array $partialRootPaths)
     {
         $this->templateView->setPartialRootPaths($partialRootPaths);
     }
-
 }

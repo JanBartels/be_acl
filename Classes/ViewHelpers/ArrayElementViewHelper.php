@@ -1,4 +1,5 @@
 <?php
+
 namespace JBartels\BeAcl\ViewHelpers;
 
 /*
@@ -14,30 +15,30 @@ namespace JBartels\BeAcl\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3\CMS\Fluid\Core\ViewHelper\Facets\CompilableInterface;
 
 /**
  * Get a value from an array by given key.
  */
 class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementViewHelper implements CompilableInterface
 {
-
     /**
      * Return array element by key.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
+     * @param array                     $arguments
+     * @param \Closure                  $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
+     *
      * @throws \TYPO3\CMS\Beuser\Exception
+     *
      * @return string
      */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
+        RenderingContextIn $renderingContext
     ) {
         $array = $arguments['array'];
         $key = $arguments['key'];
@@ -57,6 +58,7 @@ class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementV
                 1382284105
             );
         }
+
         return $result;
     }
 
@@ -67,6 +69,7 @@ class ArrayElementViewHelper extends \TYPO3\CMS\Beuser\ViewHelpers\ArrayElementV
         } catch (\RuntimeException $ex) {
             $result = $default;
         }
+
         return $result;
     }
 }
