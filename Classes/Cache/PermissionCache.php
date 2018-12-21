@@ -213,7 +213,7 @@ class PermissionCache implements SingletonInterface
         }
 
 		$usergroup_cached_list = str_replace( ',', '_', $this->backendUser->user['usergroup_cached_list'] );
-        $identifier = static::CACHE_IDENTIFIER_PERMISSIONS . '_' . $this->backendUser->user['uid'] . '_' . $usergroup_cached_list;
+        $identifier = static::CACHE_IDENTIFIER_PERMISSIONS . '_' . $this->backendUser->user['uid'] . '_' . $usergroup_cached_list . '_' . $this->backendUser->user['workspace_id'];
 
         $requestedPermissions = trim($requestedPermissions);
         if ($requestedPermissions !== '') {

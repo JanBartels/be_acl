@@ -165,7 +165,7 @@
 								<f:if condition="{userSelectedAcls->f:count()} > 0">
 									<f:for each="{userSelectedAcls}" as="userAcl" key="oid">
 									<td nowrap="nowrap">
-										<bu:permissions permission="{ba:arrayElement(array:aclList, key:data.row.uid, subKey:'0.{oid}.permissions')}" scope="useracl" pageId="{data.row.uid}" />
+										<ba:permissions permission="{ba:arrayElement(array:aclList, key:data.row.uid, subKey:'0.{oid}.permissions')}" scope="useracl" pageId="{data.row.uid}" />
 										<f:alias map="{appliedAclPid: '{ba:arrayElement(array:aclList, key:data.row.uid, subKey:\'0.{oid}.pid\')}'}">
 											<f:if condition="{appliedAclPid}"><span class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="<f:translate key='LLL:EXT:be_acl/Resources/Private/Languages/locallang_perm.xlf:recursiveAclPage' />{appliedAclPid}"></span></f:if>
 										</f:alias>
