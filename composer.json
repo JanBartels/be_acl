@@ -1,18 +1,21 @@
 {
-	"name": "jbartels/be-acl",
-	"description": "Backend Access Control Lists",
-	"type": "typo3-cms-extension",
-	"version": "1.7.2",
-	"autoload": {
-		"psr-4": {
-			"JBartels\\BeAcl\\": "Classes/"
-		}
-	},
-	"require": {
-		"typo3/cms-core": ">=7.6.0,<=8.9.99"
-	},
-	"replace": {
-		"be_acl": "self.version",
-		"typo3-ter/be-acl": "self.version"
-	}
+  "name": "jbartels/be-acl",
+  "description": "Backend Access Control Lists",
+  "type": "typo3-cms-extension",
+  "license": "GPL-2.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "JBartels\\BeAcl\\": "Classes/"
+    }
+  },
+  "require": {
+    "typo3/cms-core": ">=7.6.0,<=8.9.99"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.13"
+  },
+  "replace": {
+    "be_acl": "self.version",
+    "typo3-ter/be-acl": "self.version"
+  }
 }
