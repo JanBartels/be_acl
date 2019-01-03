@@ -26,6 +26,7 @@ namespace JBartels\BeAcl\Controller;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Utility\IconUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -103,7 +104,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         parent::indexAction();
 
         // Get ACL configuration
-        $beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
+        $beAclConfig = $this->getExtConf();
 
         $disableOldPermissionSystem = $beAclConfig['disableOldPermissionSystem'] ? 1 : 0;
         $enableFilterSelector = $beAclConfig['enableFilterSelector'] ? 1 : 0;
@@ -176,7 +177,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         parent::editAction();
 
         // Get ACL configuration
-        $beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
+        $beAclConfig = $this->getExtConf();
 
         $disableOldPermissionSystem = $beAclConfig['disableOldPermissionSystem'] ? 1 : 0;
 
@@ -194,7 +195,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
             )
             ->execute();
         $pageAcls = array();
-        while ($result = $statement->fetch()) {        
+        while ($result = $statement->fetch()) {
             $pageAcls[] = $result;
         }
 
@@ -265,7 +266,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
             )
             ->execute();
         // Process results
-        while ($result = $statement->fetch()) {        
+        while ($result = $statement->fetch()) {
             $aclObjects[$result['object_id']] = $result;
         }
         // Check results
@@ -335,7 +336,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
                     $queryBuilder->expr()->eq('recursive', $queryBuilder->createNamedParameter( 1, \PDO::PARAM_INT ) )
                 )
                 ->execute();
-            while ($result = $statement->fetch()) {        
+            while ($result = $statement->fetch()) {
                 // User type ACLs
                 if ($result['type'] == 0
                     && in_array($result['object_id'], $users)
@@ -412,7 +413,7 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
 
         $this->addAclMetaData($this->aclList[$pageId]);
 
-        while ($result = $statement->fetch()) {        
+        while ($result = $statement->fetch()) {
             $aclData = array(
                 'uid' => $result['uid'],
                 'permissions' => $result['permissions'],
@@ -451,10 +452,18 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId, \PDO::PARAM_INT ) )
             )
             ->execute();
-        while ($result = $statement->fetch()) {        
+        while ($result = $statement->fetch()) {
             $this->traversePageTree_acl($parentACLs, $result['uid']);
         }
     }
 
+
+    protected function getExtConf()
+    {
+		if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 9000000)
+	       	return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('be_acl');
+	    else
+	       	return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
+	}
 }
 

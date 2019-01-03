@@ -25,6 +25,7 @@ namespace JBartels\BeAcl\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -67,8 +68,7 @@ class UserAuthGroup
 
         $row = $params['row'];
 
-        $beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
-        if (!$beAclConfig['disableOldPermissionSystem']) {
+		if ( !$this->getDisableOldPermissionSystem() ) {
             $out = $params['outputPermissions'];
         } else {
             $out = 0;
@@ -83,9 +83,9 @@ class UserAuthGroup
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_beacl_acl');
             $whereExpressions = [
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($values['uid'], \PDO::PARAM_INT ) )
-            ];            
+            ];
             if ($i != 0) {
-                $whereExpressions[] = 
+                $whereExpressions[] =
                     $queryBuilder->expr()->eq('recursive', $queryBuilder->createNamedParameter( 1, \PDO::PARAM_INT ) )
                 ;
             }
@@ -95,7 +95,7 @@ class UserAuthGroup
                 ->where( ...$whereExpressions )
                 ->orderBy('recursive')
                 ->execute();
-            while ($result = $statement->fetch()) {        
+            while ($result = $statement->fetch()) {
                 if ($result['type'] == 0
                     && ($that->user['uid'] == $result['object_id'])
                     && $takeUserIntoAccount
@@ -147,8 +147,7 @@ class UserAuthGroup
         }
 
         // get be_acl config in EM
-        $beAclConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
-        if (!$beAclConfig['disableOldPermissionSystem']) {
+		if ( !$this->getDisableOldPermissionSystem() ) {
             $str = $params['currentClause'];
         } else {
             $str = '1 = 2';
@@ -214,7 +213,7 @@ class UserAuthGroup
             ->where(
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter( $type, \PDO::PARAM_INT ) ),
                 $queryBuilder->expr()->eq('object_id', $queryBuilder->createNamedParameter( $object_id, \PDO::PARAM_INT ) ),
-                $queryBuilder->expr()->comparison( 
+                $queryBuilder->expr()->comparison(
                     $queryBuilder->expr()->bitAnd( 'permissions' , intval( $perms ) ),
                     ExpressionBuilder::EQ,
                     intval( $perms )
@@ -233,10 +232,10 @@ class UserAuthGroup
             $statement = $queryBuilder
                 ->select('pid', 'recursive')
                 ->from('tx_beacl_acl')
-                ->where( 
+                ->where(
                     $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter( $type, \PDO::PARAM_INT ) ),
                     $queryBuilder->expr()->eq('object_id', $queryBuilder->createNamedParameter( $object_id, \PDO::PARAM_INT ) ),
-                    $queryBuilder->expr()->comparison( 
+                    $queryBuilder->expr()->comparison(
                         $queryBuilder->expr()->bitAnd( 'permissions' , intval( $perms ) ),
                         ExpressionBuilder::EQ,
                         0
@@ -291,8 +290,17 @@ class UserAuthGroup
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pid, \PDO::PARAM_INT ) )
             )
             ->execute();
-        while ($result = $statement->fetch()) {        
+        while ($result = $statement->fetch()) {
             $this->aclTraversePageTree($result['uid']);
         }
     }
+
+    protected function getDisableOldPermissionSystem()
+    {
+			if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 9000000)
+	        	return (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('be_acl', 'disableOldPermissionSystem');
+	        else
+	        	return (bool)unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl'])['disableOldPermissionSystem'];
+	}
+
 }
