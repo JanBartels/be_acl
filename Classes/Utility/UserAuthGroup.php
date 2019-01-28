@@ -285,7 +285,8 @@ class UserAuthGroup
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
-            ->removeAll();
+            ->removeAll()
+            ->add(new DeletedRestriction());
         $statement = $queryBuilder
             ->select('uid')
             ->from('pages')
