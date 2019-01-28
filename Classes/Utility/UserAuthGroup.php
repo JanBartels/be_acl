@@ -283,6 +283,9 @@ class UserAuthGroup
 
         // find subpages and call function itself again
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll();
         $statement = $queryBuilder
             ->select('uid')
             ->from('pages')
