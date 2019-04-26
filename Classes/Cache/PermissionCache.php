@@ -212,15 +212,14 @@ class PermissionCache implements SingletonInterface
             throw new \JBartels\BeAcl\Exception\RuntimeException('The Backend user needs to be initializes before the cache identifier can be generated.');
         }
 
-		$usergroup_cached_list = str_replace( ',', '_', $this->backendUser->user['usergroup_cached_list'] );
-        $identifier = static::CACHE_IDENTIFIER_PERMISSIONS . '_' . $this->backendUser->user['uid'] . '_' . $usergroup_cached_list . '_' . $this->backendUser->user['workspace_id'];
+        $identifier = $this->backendUser->user['uid'] . ';' . $this->backendUser->user['usergroup_cached_list'] . ';' . $this->backendUser->user['workspace_id'];
 
         $requestedPermissions = trim($requestedPermissions);
         if ($requestedPermissions !== '') {
-            $identifier .= '_' . $requestedPermissions;
+            $identifier .= ';' . $requestedPermissions;
         }
 
-        return $identifier;
+        return static::CACHE_IDENTIFIER_PERMISSIONS . '_' . sha1( $identifier );
     }
 
     /**
