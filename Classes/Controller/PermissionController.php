@@ -444,10 +444,10 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         }
 
         // Find child pages and their ACL permissions
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_beacl_acl');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $statement = $queryBuilder
             ->select('uid')
-            ->from('tx_beacl_acl')
+            ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( $pageId, \PDO::PARAM_INT ) )
             )
