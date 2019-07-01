@@ -2,7 +2,7 @@
 	"name": "jbartels/be-acl",
 	"description": "Backend Access Control Lists",
 	"type": "typo3-cms-extension",
-	"version": "1.9.2",
+	"version": "1.9.3",
 	"license": "GPL-2.0-or-later",
 	"autoload": {
 		"psr-4": {
