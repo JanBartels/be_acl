@@ -74,10 +74,9 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         // Actions handled by this class
         $handledActions = ['delete_acl'];
