@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -74,11 +75,12 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
+        $response = new HtmlResponse('');
+
         // Actions handled by this class
         $handledActions = ['delete_acl'];
 
@@ -88,7 +90,7 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
             return $this->handleAction($request, $response, $action);
         } // Action handled by parent
         else {
-            return parent::dispatch($request, $response);
+            return parent::dispatch($request);
         }
     }
 
