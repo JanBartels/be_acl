@@ -280,6 +280,26 @@ class UserAuthGroup
         } else {
             // in case there is no disallow ACL, add page ID to aclPageList
             $this->aclPageList[$pid] = $pid;
+
+            // Add translated pages of the given $pid if there is no parent page.
+            // All other translated pages DO have a valid parent page (pid) set, EXCEPT pages on the first level!
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder
+                ->getRestrictions()
+                ->removeAll()
+                ->add(new DeletedRestriction());
+            $statement = $queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter( 0, \PDO::PARAM_INT ) ),
+                    $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter( $pid, \PDO::PARAM_INT ) )
+                )
+                ->execute();
+
+            while ($result = $statement->fetch()) {
+                $this->aclPageList[$result['uid']] = $result['uid'];
+            }
         }
 
         // find subpages and call function itself again
