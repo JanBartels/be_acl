@@ -38,7 +38,7 @@ performance. The default entries are:
 ::
 
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['tx_be_acl_timestamp'] = array(
-        'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend',
+        'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
         'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend',
     );
 
