@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF['be_acl'] = array(
 	'title' => 'Backend ACLs',
 	'description' => 'Backend Access Control Lists',
 	'category' => 'be',
@@ -28,8 +28,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '7.0.0-7.2.99',
-			'typo3' => '8.7.0-9.5.99',
+			'typo3' => '10.4.0-10.4.99',
 		),
 		'conflicts' => array(
 		),
@@ -37,5 +36,3 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 	),
 );
-
-?>
