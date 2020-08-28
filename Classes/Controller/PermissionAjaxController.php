@@ -16,10 +16,8 @@ namespace JBartels\BeAcl\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -74,33 +72,37 @@ class PermissionAjaxController extends \TYPO3\CMS\Beuser\Controller\PermissionAj
      * The main dispatcher function. Collect data and prepare HTML output.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     *
      * @return ResponseInterface
      */
-    public function dispatch(ServerRequestInterface $request, ResponseInterface $response)
+    public function dispatch(ServerRequestInterface $request): ResponseInterface
     {
         // Actions handled by this class
         $handledActions = ['delete_acl'];
+        $response = new HtmlResponse('');
 
-        // Handle action
-        $action = $this->conf['action'];
-        if ($this->conf['page'] > 0 && in_array($action, $handledActions)) {
+        $requestBody = $request->getParsedBody();
+        $action = $requestBody['action'] ?? null;
+        $page = $requestBody['page'] ?? null;
+
+        if ($page > 0 && in_array($action, $handledActions)) {
             return $this->handleAction($request, $response, $action);
-        } // Action handled by parent
-        else {
-            return parent::dispatch($request, $response);
         }
+
+        return parent::dispatch($request);
     }
 
     protected function handleAction(ServerRequestInterface $request, ResponseInterface $response, $action)
     {
         $methodName = GeneralUtility::underscoredToLowerCamelCase($action);
+
         if (method_exists($this, $methodName)) {
             return call_user_func_array(array($this, $methodName), [$request, $response]);
-        } else {
-            $response->getBody()->write('Action method not found');
-            return $response->withStatus(400);
         }
+
+        $response->getBody()->write('Action method not found');
+
+        return $response->withStatus(400);
     }
 
     protected function deleteAcl(ServerRequestInterface $request, ResponseInterface $response)
