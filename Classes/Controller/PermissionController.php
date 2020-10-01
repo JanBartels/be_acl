@@ -457,13 +457,9 @@ class PermissionController extends \TYPO3\CMS\Beuser\Controller\PermissionContro
         }
     }
 
-
     protected function getExtConf()
     {
-		if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 9000000)
-	       	return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('be_acl');
-	    else
-	       	return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['be_acl']);
+        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('be_acl');
 	}
 }
 
