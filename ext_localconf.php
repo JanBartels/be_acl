@@ -9,9 +9,8 @@ $_EXTCONF = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\C
 	options.saveDocNew.tx_beacl_acl=1
 ');
 
-
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'][] = 'JBartels\\BeAcl\\Utility\\UserAuthGroup->calcPerms';
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'][] = 'JBartels\\BeAcl\\Utility\\UserAuthGroup->getPagePermsClause';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'][] = 'JBartels\\BeAcl\\Utility\\UserAuthGroup->calcPerms';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'][] = 'JBartels\\BeAcl\\Utility\\UserAuthGroup->getPagePermsClause';
 
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Beuser\\Controller\\PermissionController'] = array(
 	'className' => 'JBartels\\BeAcl\\Controller\\PermissionController',
