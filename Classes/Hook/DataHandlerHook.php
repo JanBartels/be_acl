@@ -1,6 +1,11 @@
 <?php
 namespace JBartels\BeAcl\Hook;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -96,4 +101,47 @@ class DataHandlerHook
         $permissionCache->flushCache();
     }
 
+    /**
+     * Handle page translations in the same table
+     *
+     * @param string $table
+     * @param int $id
+     * @param array $data
+     * @param mixed $res
+     * @param DataHandler $dataHandler
+     * @return mixed
+     */
+    public function checkRecordUpdateAccess($table, $id, $data, &$res, DataHandler $dataHandler)
+    {
+        if ($table === 'pages') {
+
+            /**
+             * Case #1 - We are editing the page translation directly
+             */
+            if ($dataHandler->defaultValues['pages']['sys_language_uid'] ?? 0 > 0) {
+
+                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                    ->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $languageParent = $queryBuilder->select('l10n_parent')
+                    ->from('pages')
+                    ->where($queryBuilder->expr()->eq('uid', (int)$id))
+                    ->execute()
+                    ->fetchColumn();
+
+                if ($languageParent) {
+                    return $dataHandler->checkRecordUpdateAccess($table, $languageParent);
+                }
+            }
+
+            /**
+             * Case #2 - We are editing the page in default language, so translation gets updated too
+             */
+            $currentRecordUid = (integer)$dataHandler->checkValue_currentRecord['uid'];
+            if ($currentRecordUid != 0 && $currentRecordUid != $id) {
+                return true;
+            }
+        }
+    }
 }
